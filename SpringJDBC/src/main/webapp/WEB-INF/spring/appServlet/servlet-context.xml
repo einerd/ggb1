@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 스프링 설정파일 -->
+	<!-- @Controller, @Component와같은 여러종류의 빈 자동생성 태그를 사용할수 있게 함 -->
+	<!-- 컴포넌트 스캔을 통해 만들어진 bean들의 요청경로를 매핑(HandlerMapping, HandlerAdapter) -->
+	
+	<annotation-driven />
+
+	<!-- mapping 속성으로 들어온 요청에 대해서는 location속성에 기술된 파일경로로 연결시켜주는 역할-->
+	<!-- css, script, html파일들이 들어감 -->
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	
+	<!-- 리졸버 뷰 (뷰 해석기) -->
+	<!-- 컨트롤러에서 돌려받는 view에 정보를 /WEB-INF/views/이름.jsp 형식으로 경로를 만들어주는 역할-->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 요청이 들어왔을때 base-package에 기술된 파일들을 스캔 -->
+	<!-- @Controller, @Reppository, @service @component어노테이션이 붙은 클래스를 bean으로 생성 -->
+	<context:component-scan base-package="com.simple.controller" />
+	<context:component-scan base-package="com.simple.score.service"/>
+	<context:component-scan base-package="com.simple.score.dao"/>
+	<context:component-scan base-package="com.simple.board.service"/>
+	<context:component-scan base-package="com.simple.board.dao"/>
+	<!-- ScoreServiceController 2nd 방법
+	<beans:bean id="ss" class="com.simple.score.service.ScoreServiceImpl"/>
+	 -->
+	
+</beans:beans>

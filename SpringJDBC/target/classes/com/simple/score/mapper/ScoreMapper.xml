@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "0//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<!-- namespace에는 구현인터페이스의 전체 경로 -->
+	<mapper namespace="com.simple.score.mapper.ScoreMapper">
+		<!-- 구현 인터페이스의 추상메서드형 -->
+		<!-- 값의 전달 #{} vo의 변수명만 적으면 전달 -->
+		<!-- 값의 전달은 vo를 통한 전달, map을 통한 전달이 가능 -->
+		<insert id="scoreRegist">
+			insert into score01(num, name, kor, eng, math)
+				values(score01_seq.nextval, #{name},#{kor},#{eng},#{math})
+		</insert>
+		
+		<!-- resulType에는  쿼리의 결과를 저장핳 o의 전체경로를 작성-->
+		<select id="scoreList" resultType="com.simple.command.ScoreVO">
+			select * from score01
+		</select>
+		
+		<delete id="scoreDelete">
+			delete from score01 where num = #{num}
+		</delete>
+		
+		
+	</mapper>
