@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE configuration
+  	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+  	<!-- doctype의 configuration은 마이바티스의 설정파일을 의미함 -->
+  	<!-- mapper파일들에서 공통으로 사용되는 코드를 기술할 수 있다 -->
+  	
+  	<configuration>
+  		<typeAliases>
+  			<typeAlias type="com.dobby.free.command.UserVO" alias="UserVO"/>
+  		</typeAliases>
+  	</configuration>

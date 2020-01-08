@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<!-- namespace에는 패키지명+인터페이스명이 들어간다 -->
+<mapper namespace="com.dobby.free.user.mapper.UserMapper">
+
+	<!-- 로그인 -->
+	<select id="login" resultType="UserVO">
+	    select * from d_user where user_id = #{user_id} and user_pw = #{user_pw}
+	</select>
+	
+  	<!-- 중복체크 -->
+  	<select id="idConfirm" resultType="int">
+  		select count(*) as result from d_user where user_id = #{user_id}
+  	</select>
+  	
+  	<!-- 회원가입 -->
+  	<insert id="join">
+  		insert into d_user(uno, user_id, user_pw, user_name, user_nick, u_phone_1, u_phone_2, u_email_1, u_email_2, u_post_no, u_address_1, u_address_2)
+  		values(uno_seq.nextval, #{user_id}, #{user_pw}, #{user_name}, #{user_nick}, #{u_phone_1}, #{u_phone_2}, #{u_email_1}, #{u_email_2}, #{u_post_no}, #{u_address_1}, #{u_address_2})
+  	</insert>
+  	
+  	<select id="getInfo" resultType="UserVO">
+  		select * from d_user where user_id = #{user_id}
+  	</select>
+<!--
+	<resultMap type="UserVO" id="reviewBoardList">
+		<result property="uno" column="uno"/>
+		<result property="user_id" column="user_id"/>
+		<result property="user_name" column="user_name"/>
+		<result property="user_nick" column="user_nick"/>
+		<result property="u_phone_1" column="u_phone_1"/>
+		<result property="u_phone_2" column="u_phone_2"/>
+		<result property="u_email_1" column="u_email_1"/>
+		<result property="u_email_2" column="u_email_2"/>
+		<result property="u_post_no" column="u_post_no"/>
+		<result property="u_address_1" column="u_address_1"/>
+		<result property="u_address_2" column="u_address_2"/>
+		<collection property="userBoardList" resultMap="list"/>
+	</resultMap> -->
+<!--	
+	<resultMap type="reviewBoardVO" id="list">
+		<result property="review_no" column="review_no"/>
+		<result property="r_title" column="r_title"/>
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+-->
+	
+<!--	<select id="getInfo" resultMap="reviewBoardList">
+  		select user_id,
+		       user_name,
+		       user_nick,
+		       u_phone_1,
+		       u_phone_2,
+		       u_email_1,
+		       u_email_2,
+		       u_post_no,
+		       u_address_1,
+		       u_address_2,
+		       f.bno,
+		       f.title,
+		       f.regdate
+		from d_user u LEFT OUTER JOIN d_review r
+		on u.user_id = r.writer
+		where user_id = #{user_id}
+		order by review_no desc
+  	</select>
+-->  	
+	<!-- 마이페이지 업데이트 -->
+  	<update id="update">
+  		update d_user set 
+  			user_pw = #{user_pw}, 
+  			user_name= #{user_name}, 
+  			user_nick= #{user_nick}, 
+  			userphone1 = #{u_phone_1},
+  			userphone2 = #{u_phone_1},
+  			useremail1 = #{u_email_1},
+  			useremail2 = #{u_email_2},
+  			u_post_no = #{u_post_no},
+  			u_address_1 = #{u_address_1},
+  			u_address_2 = #{u_address_2}
+  		where user_id = #{user_id}
+   	</update>
+	
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dobby.free.review.mapper.ReviewMapper">
+  	
+  	<!-- 게시글 등록하기(파일업로드) -->
+  	<insert id="upload">
+  		insert into d_review(review_no, user_id, r_title, r_content, r_img_name, r_img_ext, r_uploadpath, r_fileloca, starCount, pno)
+  		values( review_no_seq.nextval, #{user_id}, #{r_title}, #{r_content}, #{r_img_name}, #{r_img_ext}, #{r_uploadpath}, #{r_fileloca}, #{starCount}, #{pno})
+  	</insert>
+  	
+  	
+  	<!-- 전체게시글 목록 보기-->
+  	<select id="getList" resultType="com.dobby.free.command.ReviewVO">
+  		<![CDATA[
+	  	select *
+	  	from(select rownum as rn, review_no, r_title, r_content, user_id, regdate, starcount
+	  		from(select * 
+		  		from d_review where pno = #{pno}
+		  		order by review_no desc ))
+		where rn > (#{cri.pageNum}-1) * #{cri.amount} and rn <= #{cri.pageNum} * #{cri.amount}
+  		]]>
+  	</select>
+  	
+  	<!-- 전체게시글 수 (페이징) -->
+  	<select id="getTotal" resultType="int">
+  		select count(*) as total from d_review
+  	</select>
+  	
+  	<!-- 게시글 상세화면, 수정화면 보기 -->
+  	<select id="detail" resultType="com.dobby.free.command.ReviewVO">
+  		select * from d_review where review_no = #{review_no}
+  	</select>
+
+	<!-- 게시글 수정하기 -->
+  	<update id="update">
+  		update d_review set 
+  		user_id = #{user_id},
+  		r_title = #{r_title},
+  		r_content = #{r_content},
+  		starcount = #{starCount},
+  		regdate = sysdate
+  		where review_no = #{review_no}
+  		
+  	</update>
+
+  	
+  	<!-- 게시글 삭제하기 -->
+  	<delete id="delete">
+  		delete from d_review where review_no = #{review_no}
+  	</delete>
+  	
+  	<select id="getPno" resultType="com.dobby.free.command.ReviewVO">
+  		select pno from d_review where review_no = #{rno}
+  	</select>
+  
+  
+  </mapper>

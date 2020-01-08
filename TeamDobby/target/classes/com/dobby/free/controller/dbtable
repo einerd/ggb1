@@ -1,0 +1,143 @@
+create table d_user (
+    uno number(10,0), --유저번호--
+    user_id varchar2(20), --유저 아이디
+    user_pw varchar2(20), --유저 비번
+    user_name varchar2(20), --유저 이름
+    user_nick varchar2(20), --유저 별명
+    u_phone_1 varchar2(4), -- 유저 전화(지역번호) 
+    u_phone_2 varchar2(8), -- 유저 전화(등록번호) 
+    u_mobile_1 varchar2(4), -- 유저 핸드폰 (010 등) 
+    u_mobile_2 varchar2(8), -- 유저 핸드폰 (등록번호) 
+    u_address_1 varchar2(100), --유저 주소 1
+    u_address_2 varchar2(300), --유저 주소 2
+    u_post_no varchar2(20), --유저 우편번호 
+    u_email_1 varchar2(50), --유저 이메일 앞 
+    u_email_2 varchar2(50), --유저 이메일 뒤 
+    b_history varchar2(200) --유저 구매 이력 
+);
+alter table d_user add constraint user_uno_pk primary key(uno);
+create sequence uno_seq;
+
+create table d_seller (
+    sno number(10,0), --셀러 번호--
+    seller_id varchar2(20), --셀러 아이디
+    seller_pw varchar2(20), --셀러 비번
+    seller_name varchar2(20), --셀러 이름
+    seller_com_name varchar2(20), --셀러 회사이름
+    s_phone_1 varchar2(4),  --셀러 전화번호 (지역번호)
+    s_phone_2 varchar2(8),  --셀러 전화번호 (등록번호)
+    s_address_1 varchar2(100), --셀러 주소1
+    s_address_2 varchar2(300), --셀러 주소2
+    s_post_no varchar2(20), --셀러 우편번호
+    s_email_1 varchar2(50), --셀러 이메일 앞
+    s_email_2 varchar2(50), --셀러 이메일 뒤
+    business_no varchar2(50) --셀러 판매자 등록 번호
+);
+alter table d_seller add constraint seller_sno_pk primary key(sno);
+create sequence sno_seq;
+
+create table d_review (
+    review_no number(10,0), --리뷰 번호--
+    pno number(10,0), --제품 번호
+    uno number(10,0), --유저 번호
+    sno number(10,0), --셀러 번호
+    b_history varchar2(200), --구매자 구매내역
+    r_title varchar2(100), --리뷰 제목
+    r_content varchar2(1000), --리뷰 내용
+    r_img_name varchar2(50), --리뷰 이미지 이름
+    r_img_ext varchar2(20), --리뷰 이미지 확장자
+    r_uploadpath varchar2(200), --리뷰 이미지 업로드 패스
+    r_fileloca varchar2(200), --리뷰 이미지 업로드 위치
+    regdate date default sysdate --등록일
+);
+alter table d_review add constraint review_no_pk primary key(review_no);
+create sequence review_no_seq;
+
+create table d_qna (
+    qna_no number(10,0), --질문 번호--
+    pno number(10,0), --제품 번호
+    uno number(10,0), --유저 번호
+    sno number(10,0), --셀러 번호
+    b_history varchar2(200), --구매자 구매내역 (필요 없으면 추후 삭제)
+    q_title varchar2(100), --질문 제목
+    q_content varchar2(1000), --질문 내용
+    q_img_name varchar2(50), --질문 이미지 이름
+    q_img_ext varchar2(20), --질문 이미지 확장자
+    q_uploadpath varchar2(200), --질문 이미지 업로드 패스
+    q_fileloca varchar2(200), --질문 이미지 업로드 위치
+    regdate date default sysdate --등록일
+);
+alter table d_qna add constraint qna_no_pk primary key(qna_no);
+create sequence qna_no_seq;
+
+create table d_product_detail (
+    pno number(10,0), --제품번호--
+    p_item varchar2(20), -- select로 품목 선택 (기획단계)
+    p_name varchar2(20), --제품 이름
+    p_price varchar2(20), --제품 가격
+    p_quantity number(10,0), --제품 재고
+    p_b_quantity number(10,0), --구매 갯수
+    p_detail varchar2(2000), --제품 상세
+    p_manufac varchar2(50), --제품 제조사
+    p_img_names varchar2(100), --제품 이미지 이름
+    p_img_exts varchar2(40), --제품 이미지 확장자
+    p_uploadpath varchar2(200), --제품 이미지 업로드 패스
+    p_fileloca varchar2(200), --제품 이미지 업로드 위치
+    p_option_1 varchar2(50), --제품 옵션 1 (기획단계)
+    p_option_2 varchar2(50), --제품 옵션 2 (기획단계)
+    p_regdate date default sysdate, --제품 등록일
+    sno number(10,0), -- 판매자 번호 (이하 정보는 판매자 정보로 불러오는 방법으로 사용 가능)
+    seller_id varchar2(20), 
+    seller_name varchar2(20),
+    seller_nick varchar2(20),
+    s_phone_1 varchar2(4),
+    s_phone_2 varchar2(8),
+    s_address_1 varchar2(100),
+    s_address_2 varchar2(300),
+    s_post_no varchar2(20),
+    s_email_1 varchar2(50),
+    s_email_2 varchar2(50),
+    business_no varchar2(50)
+);
+alter table d_product_detail add constraint pno_pk primary key(pno);
+create sequence pno_seq;
+
+create table d_basket(
+    basket_list number(10,0), --장바구니 순서 정렬을 위한 번호 부여 (필요 없을시 삭제)--
+    uno number(10,0), --유저 번호
+    pno number(10,0), --제품 번호
+    p_price varchar2(20), --제품 가격
+    p_name varchar2(20), --제품 이름
+    p_option_1 varchar2(50), --제품 옵션 1 (기획단계)
+    p_option_2 varchar2(50), --제품 옵션 2 (기획단계)
+    p_quantity number(10,0), --제품 재고
+    p_b_quantity number(10,0) --구매 갯수
+); -- 가격 총 합 도출은 스크립트로 계산해서 출력하는것으로
+alter table d_basket add constraint basket_list_pk primary key(basket_list); --필요 없을시 삭제
+create sequence basket_list_seq; --필요 없을시 삭제
+
+create table d_ordered(
+    order_no number(10,0), --주문번호--
+    uno number(10,0), --유저 번호 f_key로 사용
+    b_list varchar2(50), --구매 리스트 저장 (hash 방식이나 list 방식으로 한번에 저장)
+    b_date date default sysdate --구매 일
+    
+);
+alter table d_ordered add constraint order_no_pk primary key(order_no);
+create sequence order_no_seq;
+
+create table order_address(
+    post_order_no number(10,0), --주소지 번호--
+    uno number(10,0), --유저번호
+    post_name varchar2(20), --받는사람 이름
+    post_phone_1 varchar2(4), -- 받는사람 전화(지역번호) 
+    post_phone_2 varchar2(8), -- 받는사람 전화(등록번호) 
+    post_mobile_1 varchar2(4), -- 받는사람 핸드폰 (010 등) 
+    post_mobile_2 varchar2(8), -- 받는사람 핸드폰 (등록번호) 
+    post_address_1 varchar2(100), --받는사람 주소 1
+    post_address_2 varchar2(300), --받는사람 주소 2
+    post_post_no varchar2(20) --받는사람 우편번호 
+);
+alter table order_address add constraint order_address_pk primary key(post_order_no);
+create sequence post_order_no_seq;
+

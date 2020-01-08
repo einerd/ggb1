@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.dobby.free.qna.mapper.QnaBoardMapper">
+
+  	
+  	<insert id="registA">
+  		insert into d_qna(
+  		qna_no, pno, uno, sno, b_history, q_title, q_content, q_img_name, q_img_ext, q_uploadpath, q_fileloca, user_id)
+  			values(qna_no_seq.nextval, #{pno}, #{uno}, #{sno}, #{b_history}, #{q_title}, #{q_content}, #{q_img_name}, #{q_img_ext}, #{q_uploadpath}, #{q_fileloca}, #{user_id})  	
+  	</insert>
+  	<insert id="registB">
+  		insert into d_qna(qna_no, pno, uno, q_title, q_content, user_id)
+  			values(qna_no_seq.nextval, #{pno}, #{uno}, #{q_title}, #{q_content}, #{user_id})  	
+  	</insert>
+  	 
+  	<!-- 목록 -->
+  	<select id="getList" resultType="com.dobby.free.command.QnaVO">
+  		<!-- select * from d_qna order by qna_no desc -->
+  		<![CDATA[ 
+  		select *
+		from(select rownum as rn, qna_no, pno, uno, sno, b_history, q_title, q_content, q_img_name, q_img_ext, q_uploadpath, q_fileloca, user_id, regdate
+		     from(select * 
+		         from d_qna where pno = #{pno}
+		         order by qna_no desc
+		         )
+		) where rn > (#{cri.pageNum}-1) * #{cri.amount} and rn <= #{cri.pageNum} * #{cri.amount}
+		]]>
+  	</select>
+
+	<!-- 게시글 상세화면, 수정화면 보기 -->
+  	<select id="detail" resultType="com.dobby.free.command.QnaVO">
+  		select * from d_qna where qna_no = #{qna_no}
+  	</select>
+
+	<!-- 게시글 수정하기 -->
+  	<update id="update">
+  		update d_qna set 
+	  		uno = #{uno},
+	  		b_history = #{b_history},
+	  		q_title = #{q_title},
+	  		q_content = #{q_content}
+	  		where qna_no = #{qna_no}
+  	</update>
+	
+	<!-- 게시글 삭제하기 -->
+  	<delete id="delete">
+  		delete from d_qna where qna_no = #{qna_no}
+  	</delete>
+	
+	<!-- 전체 게시글 수(반환타입명시) -->
+  	<select id="getTotal" resultType="int">
+  		select count(*) as total from d_qna
+  	</select>
+	
+	<select id="getPno" resultType="com.dobby.free.command.QnaVO">
+		select * from d_qna where qna_no = #{qno}
+	</select>
+  	
+  </mapper>
+  
+  

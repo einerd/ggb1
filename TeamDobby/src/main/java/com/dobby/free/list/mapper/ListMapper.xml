@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace에는 패키지명+인터페이스명이 들어간다 -->
+<mapper namespace="com.dobby.free.list.mapper.ListMapper">
+	
+	<!-- 리스트 불러오기 -->
+	<select id="getList" resultType="com.dobby.free.command.ProductDetailVO">
+	    <![CDATA[
+	    select * from (select rownum as rn, pno, p_item, p_name, p_price, p_quantity, 
+	    p_b_quantity, p_detail, p_manufac, p_img_names, p_img_exts, p_uploadpath, 
+	    p_fileloca, p_option_1, p_option_2, p_regdate, sno, seller_id, seller_name, 
+	    seller_nick, s_phone_1, s_phone_2, s_address_1, s_address_2, s_post_no, s_email_1, 
+	    s_email_2, business_no from
+	    (select * from d_product_detail where
+		]]>
+		<choose>
+				<when test=
+				"((searchType == null) or (searchType == '') or (searchType == 'all'))
+ 				and ((searchName == null) or (searchName == ''))">
+				1=1</when>
+				
+				<when test=
+				"((searchType == null) or (searchType == '')) 
+				and ((searchName != null) or (searchName != ''))">
+				p_name like '%'||#{searchName}||'%'</when>
+				
+				<when test=
+				"((searchType != null) or (searchType != ''))
+  				and ((searchName != null) or (searchName != ''))">
+				p_name like '%'||#{searchName}||'%' and p_item = #{searchType}</when>
+				
+				<when test=
+				"((searchType != null) or (searchType != ''))
+ 				and ((searchName == null) or (searchName == ''))">
+				p_item = #{searchType}</when>
+				
+				<otherwise>1=1</otherwise>
+		</choose>
+				
+		<![CDATA[		 
+				 order by pno desc)) 
+				 where rn > (#{pageNum}-1)*#{amount} and rn <= #{pageNum}*#{amount}]]>
+	</select>
+	
+	<!-- 개별상품정보 불러오기 -->
+	<select id="searchProductInfo" resultType="com.dobby.free.command.ProductDetailVO">
+		select * from d_product_detail where pno = #{pno}
+	</select>
+	
+	<!-- 장바구니에 넣기 -->
+	<insert id="insertCart">
+		insert into d_basket(basket_list, uno, pno, p_price, p_name, p_quantity, p_b_quantity)
+		values(basket_list_seq.nextval, #{uno}, #{vo.pno}, #{vo.p_price}, #{vo.p_name}, #{vo.p_quantity}, #{stock})
+	</insert>
+	
+	<!-- 장바구니 리스트 불러오기 -->
+	<select id="getBasketList" resultType="com.dobby.free.command.ProductDetailVO">
+		select dp.pno, dp.p_item, dp.p_name, 
+			   dp.p_price, dp.p_quantity, db.p_b_quantity,
+               dp.p_detail, dp.p_manufac, dp.p_img_names, 
+               dp.p_img_exts, dp.p_uploadpath,dp.p_fileloca, 
+               dp.p_option_1, dp.p_option_2, dp.p_regdate, 
+               dp.seller_id,dp.seller_name, dp.seller_nick, 
+               dp.s_phone_1, dp.s_phone_2, dp.s_address_1,
+               dp.s_address_2, dp.s_post_no, dp.s_email_1, 
+               dp.s_email_2, dp.business_no 
+               from d_product_detail dp inner join d_basket db on db.pno = dp.pno and db.uno = #{uno}
+	</select>
+	
+	<!-- 장바구니에서 삭제하기 -->
+	<delete id="delInBasketList">
+		delete from d_basket where pno = #{pno} and uno = #{uno}
+	</delete>
+	
+	<!-- 장바구니 리스트 업데이트 (장바구니에서 결제하기로 이동시) -->
+	<update id="updateBasketList">
+		update d_basket set p_b_quantity = #{p_b_quantity} where pno = #{pno} and uno = #{uno}
+	</update>
+	
+	<!-- 회원정보 불러오기 (주소 불러오기 위한 과정) -->
+	<select id="getCustomerInfo" resultType="com.dobby.free.command.UserVO">
+		select * from d_user where uno = #{uno}
+	</select>
+	
+	<!-- 장바구니에 이미 등록되어있는지 확인 -->
+	<select id="searchBasketListAlrdy" resultType="int">
+		select count(*) as result from d_basket where uno = #{uno} and pno = #{pno}
+	</select>
+	
+	<!-- 상품 리스트 불러올 때, 총 게시글 수 카운트 -->
+	<select id="getTotal" resultType="int">
+		<![CDATA[select count(*) as total from d_product_detail where 
+	    ]]>
+	    	<choose>
+				<when test=
+				"((searchType == null) or (searchType == '') or (searchType == 'all'))
+ 				and ((searchName == null) or (searchName == ''))">
+				1=1</when>
+				
+				<when test=
+				"((searchType == null) or (searchType == '')) 
+				and ((searchName != null) or (searchName != ''))">
+				p_name like '%'||#{searchName}||'%'</when>
+				
+				<when test=
+				"((searchType != null) or (searchType != ''))
+  				and ((searchName != null) or (searchName != ''))">
+				p_name like '%'||#{searchName}||'%' and p_item = #{searchType}</when>
+				
+				<when test=
+				"((searchType != null) or (searchType != ''))
+ 				and ((searchName == null) or (searchName == ''))">
+				p_item = #{searchType}</when>
+				
+				<otherwise>1=1</otherwise>
+			 </choose>
+	</select>
+	
+	<!-- 장바구니, 상품리스트, 등등 각 페이지마다 필요한 총 게시글 수 카운트 -->
+	<select id="getCount" resultType="int">
+		<![CDATA[
+			select count(*) as total from ]]>
+			<if test="key.key == 'basket'">d_basket</if>
+			<if test="key.key == 'productList'">d_product_detail where 
+			<choose>
+				<when test=
+				"((cri.searchType == null) or (cri.searchType == '') or (cri.searchType == 'all'))
+ 				and ((cri.searchName == null) or (cri.searchName == ''))">
+				1=1</when>
+				
+				<when test=
+				"((cri.searchType == null) or (cri.searchType == '')) 
+				and ((cri.searchName != null) or (cri.searchName != ''))">
+				p_name like '%'||#{cri.searchName}||'%'</when>
+				
+				<when test=
+				"((cri.searchType != null) or (cri.searchType != ''))
+  				and ((cri.searchName != null) or (cri.searchName != ''))">
+				p_name like '%'||#{cri.searchName}||'%' and p_item = #{cri.searchType}</when>
+				
+				<when test=
+				"((cri.searchType != null) or (cri.searchType != ''))
+ 				and ((cri.searchName == null) or (cri.searchName == ''))">
+				p_item = #{cri.searchType}</when>
+				<otherwise>1=1</otherwise>
+			</choose>
+			</if>
+			<if test="key.key == 'p_history'">d_ordered</if>
+	</select>
+	
+	<!-- 구매했을 때, 주문내역 업데이트  -->
+	<insert id="purchaseSubmit">
+		insert into d_ordered (order_no, uno, pno, p_b_quantity) 
+						values(order_no_seq.nextval, #{uno}, #{vo.pno}, #{vo.p_b_quantity})
+	</insert>
+	
+	<!-- 주문내역 긁어오기 -->
+	<select id="getMyHistoryList" resultType="com.dobby.free.command.ProductDetailVO">
+		select dp.pno, dp.p_item, dp.p_name, dp.p_price, dp.p_quantity, do.p_b_quantity, dp.p_detail, 
+			dp.p_manufac, dp.p_img_names, dp.p_img_exts, dp.p_uploadpath, dp.p_fileloca, dp.p_option_1,
+			dp.p_option_2, do.b_date as p_regdate, dp.sno, dp.seller_name,
+			dp.seller_nick, dp.s_phone_1, dp.s_phone_2, dp.s_address_1, dp.s_address_2,
+			dp.s_post_no, dp.s_email_1, dp.s_email_2,dp.business_no
+        from d_product_detail dp inner join d_ordered do on dp.pno = do.pno 
+        where do.uno = #{uno} order by do.b_date desc
+	</select>
+	
+	<!-- 이전에 사용한 주소 긁어오기 -->
+	<select id="getLastAddress" resultType="com.dobby.free.command.AddressVO">
+		select * from order_address where uno = #{uno}
+	</select>
+	
+	<!-- 신규주소 입력했을 시, 이전에 사용한 주소 덮어쓰기 -->
+	<update id="updateLastAddress">
+		update order_address set post_name = #{vo.post_name}, post_mobile_1 = #{vo.post_mobile_1}, 
+			post_mobile_2 = #{vo.post_mobile_2}, post_address_1 = #{vo.post_address_1},
+			post_address_2 = #{vo.post_address_2}, post_post_no = #{vo.post_post_no}
+			where uno = #{uno}
+	</update>
+	
+	<!-- 신규주소를 최초로 입력했을 시, 주소 테이블에 추가 -->
+	<insert id="insertSubAddress">
+		insert into order_address(post_order_no, uno, post_name, post_mobile_1, post_mobile_2,
+		post_address_1, post_address_2, post_post_no)
+		values(post_order_no_seq.nextval, #{uno}, #{vo.post_name}, #{vo.post_mobile_1},
+		#{vo.post_mobile_2}, #{vo.post_address_1}, #{vo.post_address_2}, #{vo.post_post_no})
+	</insert>
+	
+	<!-- 신규주소가 이미 있는지 없는지 확인 -->
+	<select id="searchSubAddress" resultType="int">
+		select count(*) as result from order_address where uno = #{uno}
+	</select>
+	
+</mapper>

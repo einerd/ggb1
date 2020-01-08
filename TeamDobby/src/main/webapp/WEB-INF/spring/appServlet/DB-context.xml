@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/db-config/Hikari.properties"/>
+	</bean>
+	
+	<!-- 히카리커넥션에 사용될 DB접속 관련 정보 정의(데이터소스 정보) -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="${ds.driverClassName}"/>
+		<property name="jdbcUrl" value="${ds.jdbcUrl}"/>
+		<property name="username" value="${ds.username}"/>
+		<property name="password" value="${ds.password}"/>
+	</bean>
+	<!-- 커넥션 풀에 사용될 HikariDataSource 생성(데이터소스 정보 주입) -->
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig"/>
+	</bean>
+	
+	<!-- 요놈은 mybatis-spring임 -->
+	<!-- 마이바티스만 사용하면, SqlSessionFactory는 SqlSessionFactoryBuilder를 사용해서 생성 -->
+	<!-- 마이바티스 스프링 연동모듈에서는, SqlSessionFactoryBean가 대신 사용 -->
+	<!-- mybatis 연결모듈에 필요한 연결정보 주입(데이터소스 정보 주입) -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"/>
+		<property name="configLocation" value="classpath:/mybatis-config/mybatis-config.xml"/>
+	</bean>
+	
+	<!-- xml파일이 존재하는 패키지명을 스캔 -->
+	<mybatis-spring:scan base-package="com.dobby.free.list.mapper"/>
+	<mybatis-spring:scan base-package="com.dobby.free.user.mapper"/>
+	<mybatis-spring:scan base-package="com.dobby.free.review.mapper"/>
+	<mybatis-spring:scan base-package="com.dobby.free.qna.mapper"/>
+	
+	
+</beans>
