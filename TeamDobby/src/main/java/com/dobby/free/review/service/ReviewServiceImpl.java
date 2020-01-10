@@ -44,11 +44,16 @@ public class ReviewServiceImpl implements ReviewService{
 
 
 	@Override
-	public boolean update(ReviewVO vo) {
+	public boolean update_a(ReviewVO vo) {
 	
-		return reviewMapper.update(vo);
+		return reviewMapper.update_a(vo);
 	}
 	
+	@Override
+	public boolean update_b(ReviewVO vo) {
+		
+		return reviewMapper.update_b(vo);
+	}
 	
 	@Override
 	public boolean delete(int review_no) {
@@ -57,22 +62,35 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public boolean upload(ReviewVO vo) {
+	public boolean upload_a(ReviewVO vo) {
 		
-		return reviewMapper.upload(vo);
+		return reviewMapper.upload_a(vo);
+	}
+	
+	@Override
+	public boolean upload_b(ReviewVO vo) {
+		
+		return reviewMapper.upload_b(vo);
 	}
 
 	@Override
 	public ReviewVO getPno(int rno) {
-		// TODO Auto-generated method stub
+		
 		return reviewMapper.getPno(rno);
 	}
 
-	
+	@Override
+	public ReviewVO fileList(int review_no) {
+		
+		return reviewMapper.fileList(review_no);
+	}
 
-	
+	@Override
+	public boolean fileNull(int review_no) {
+		
+		return reviewMapper.fileNull(review_no);
+	}
 
-	
 
 	
 }

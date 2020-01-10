@@ -110,7 +110,7 @@
                               <div>
                                <div class="middle">
                                 <!--<img width="500" src="../resources/img/d1.jpg"> -->
-                                <img width="500" src="${pageContext.request.contextPath }/${vo.p_uploadpath }/${vo.p_img_names}${vo.p_img_exts}">
+                                <img width="500" src="${pageContext.request.contextPath }/${qnaVO.q_uploadpath }/${qnaVO.q_img_name}${qnaVO.q_img_ext}" alt="등록된 이미지가 없습니다">
                                 </div>
                                 </div>
                               </td>

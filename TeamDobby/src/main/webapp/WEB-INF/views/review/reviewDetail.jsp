@@ -53,6 +53,32 @@
     	.top {
     		padding-top: 80px;
     	}
+    	
+    	body.modal-open {
+		    overflow:scroll;
+		    width:100.9%;
+		}
+		
+		.modal {
+        text-align: center;
+		}
+		 
+		@media screen and (min-width: 768px) { 
+		        .modal:before {
+		                display: inline-block;
+		                vertical-align: middle;
+		                content: " ";
+		                height: 100%;
+		        }
+		}
+		 
+		.modal-dialog {
+		        display: inline-block;
+		        text-align: left;
+		        vertical-align: middle;
+		}
+
+		
     </style>
 </head>
 <body>
@@ -65,16 +91,26 @@
                 <div class="col-xs-12 content-wrap">
                     <div class="titlebox titlebox2">
                         <p>상품후기</p>
+                        
                     </div>
                     <form action="reviewModify" method="post" name="regForm">
                     <table class="table">
                         <tbody class="t-control">
                         <tr class="reviewimg">
                              
-                              <td class="t-title">
+                              <td class="t-title" >
                               <div>
-                               <div class="middle">
-                                <img width="300" src="${pageContext.request.contextPath }/resources/img/${reviewVO.r_fileloca}/${reviewVO.r_img_name}">
+                               <div class="middle"> <!-- 모달 작업 (사진 크게) -->
+                               <a data-toggle="modal" href="#reviewModal">
+                              <c:choose>
+	                               <c:when test="${reviewVO.r_img_name != null && reviewVO.r_img_name != ''}"> <!-- 이미지값 null이면 안보이게 하기 -->
+	                                <img width="400" src="${pageContext.request.contextPath }/resources/img/${reviewVO.r_fileloca}/${reviewVO.r_img_name}" >
+	                                </c:when>
+	                                <c:otherwise>
+	                               
+	                                </c:otherwise>
+                              </c:choose>
+                               </a>
                                 </div>
                                 </div>
                               </td>
@@ -108,7 +144,7 @@
                           </tr>
                           <tr>
                             <td class="t-title">UserId</td>
-                            <td><input type="text" class="form-control" value="${reviewVO.user_id }" name="user_id" readonly></td>
+                            <td><input type="text" class="form-control" value="${reviewVO.user_id }" name="writer" readonly></td>
                           </tr>
                           <tr>
                             <td class="t-title">TITLE</td>
@@ -137,20 +173,49 @@
             
         </div>
         
+        
+      <!-- 모달 -->
+	<div id="reviewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <img width="1200" height="1200" src="${pageContext.request.contextPath }/resources/img/${reviewVO.r_fileloca}/${reviewVO.r_img_name}" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+        
+        
     </section>
     
     <%@include file="../include/footer.jsp" %>
     
     <script>
+    
+    	//이미지 모달창
+ 
+
       
 	  	//수정화면이동
-	    var reviewList = document.getElementById("reviewModify");
-	    reviewModify.onclick = function() {
-	    	var rno = location.search;
-  	    	rno = location.search.substring(rno.lastIndexOf("=")+1);
-	    	document.regForm.setAttribute("action", "reviewModify?review_no="+rno)
-	    	document.regForm.submit();
-	    }
+	       var reviewList = document.getElementById("reviewModify");
+       reviewModify.onclick = function() {
+          var rno = location.search;
+            rno = location.search.substring(rno.lastIndexOf("=")+1);
+            $.getJSON(
+	  	  			"../review/getPno/"+rno+"/", // 요청보낼 주소
+	  	  			function(data) { // 성공시 전달받을 익명함수
+				          document.regForm.setAttribute("action", "reviewModify?review_no="+rno);
+				          document.regForm.submit();
+	  	  			}
+	  	  	    )
+            
+       }
     	
     
 	  	//삭제기능

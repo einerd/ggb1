@@ -53,5 +53,6 @@ public interface ListMapper {
 	// 주소테이블에 주소 추가
 	public int insertSubAddress(@Param("vo") AddressVO addVO,
 								@Param("uno") int uno);
+	public int checkProduct(int pno);
 
 }

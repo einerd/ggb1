@@ -1,8 +1,12 @@
 package com.dobby.free.user.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dobby.free.command.QnaVO;
+import com.dobby.free.command.ReviewVO;
 import com.dobby.free.command.UserVO;
 import com.dobby.free.user.mapper.UserMapper;
 
@@ -35,6 +39,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int update(UserVO vo) {
 		return userMapper.update(vo);
+	}
+
+	@Override
+	public ArrayList<QnaVO> getUserQnaList(int uno) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserQnaList(uno);
+	}
+
+	@Override
+	public ArrayList<ReviewVO> getUserReviewList(int uno) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserReviewList(uno);
 	}
 
 	

@@ -27,9 +27,9 @@ public class ReviewVO {
 	}
 	
 
-	//게시판 생성자
+	//게시판 생성자-파일있는 경우(o)
 	public ReviewVO(int review_no, String user_id, String r_title, String r_content, String r_img_name,
-			String r_img_ext, String r_uploadpath, String r_fileloca, Timestamp regdate, int starCount, int pno) {
+			String r_img_ext, String r_uploadpath, String r_fileloca, Timestamp regdate, int starCount, int pno, int uno) {
 		super();
 		this.review_no = review_no;
 		this.user_id = user_id;
@@ -42,7 +42,22 @@ public class ReviewVO {
 		this.regdate = regdate;
 		this.starCount = starCount;
 		this.pno = pno;
+		this.uno = uno;
 		
+	}
+	
+	//게시판생성자-파일없는 경우(x)
+	public ReviewVO(int review_no, String user_id, String r_title, String r_content,
+			Timestamp regdate, int starCount, int pno, int uno) {
+		super();
+		this.review_no = review_no;
+		this.user_id = user_id;
+		this.r_title = r_title;
+		this.r_content = r_content;
+		this.regdate = regdate;
+		this.starCount = starCount;
+		this.pno = pno;
+		this.uno = uno;
 	}
 	
 	
@@ -68,7 +83,6 @@ public class ReviewVO {
 		this.regdate = regdate;
 		this.starCount = starCount;
 	}
-
 
 
 

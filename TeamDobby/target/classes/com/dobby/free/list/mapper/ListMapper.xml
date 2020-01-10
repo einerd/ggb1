@@ -193,4 +193,8 @@
 		select count(*) as result from order_address where uno = #{uno}
 	</select>
 	
+	<select id="checkProduct" resultType="int">
+		select count(*) as result from d_product_detail where pno = #{pno}
+	</select>
+	
 </mapper>

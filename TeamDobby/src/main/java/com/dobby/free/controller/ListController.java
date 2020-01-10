@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -341,18 +342,29 @@ public class ListController {
 	// 제품 상세보기 이동
 	@RequestMapping(value="/productDetail")
 	public String productDetail(@RequestParam("pno") int pno,
+								@RequestParam(value="path", required=false) String path,
 								Model model, Criteria cri) {
 		ProductDetailVO vo = listService.searchProductInfo(pno);
 		ArrayList<ReviewVO> list = reviewService.getList(cri, pno);
 		ArrayList<QnaVO> list2 = QnaBoardService.getList(cri, pno);
 		
-		int total = reviewService.getTotal();
-		PageVO pageVO = new PageVO(cri, total);
+		int total1 = reviewService.getTotal();
+		int total2 = QnaBoardService.getTotal();
+		PageVO pageVO1 = new PageVO(cri, total1);
+		PageVO pageVO2 = new PageVO(cri, total2);
+		model.addAttribute("pageVO1", pageVO1);
+		model.addAttribute("pageVO2", pageVO2);
 		
-		model.addAttribute("pageVO", pageVO); //페이지 정보
 		model.addAttribute("review", list); // 리뷰게시글 정보
 		model.addAttribute("QnaList", list2);// qna게시글 정보
 		model.addAttribute("vo", vo); // 상품정보
 		return "productList/productDetail";
+	}
+	
+	@RequestMapping(value="checkProduct/{pno}")
+	@ResponseBody
+	public int checkProduct(@PathVariable("pno") int pno) {
+		int result = listService.checkProduct(pno);
+		return result;
 	}
 }

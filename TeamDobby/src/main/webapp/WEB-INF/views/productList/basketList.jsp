@@ -611,7 +611,6 @@
 			console.log("상품번호: " + list2[i].getAttribute("value"));
 			console.log("수량: " + list1[i].innerHTML);
 			console.log("--------------------");
-			
 			map.pno = list2[i].getAttribute("value");
 			map.p_b_quantity = list1[i].innerHTML;
 			array.push(map);

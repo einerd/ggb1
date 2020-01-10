@@ -43,4 +43,6 @@ public interface ListService {
 	// 주소테이블 인서트
 	public int insertSubAddress(AddressVO addVO, int uno);
 	
+	public int checkProduct(int pno);
+	
 }

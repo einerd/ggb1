@@ -1,5 +1,7 @@
 package com.dobby.free.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dobby.free.command.QnaVO;
+import com.dobby.free.command.ReviewVO;
 import com.dobby.free.command.UserVO;
 import com.dobby.free.user.service.UserService;
 
@@ -60,7 +63,12 @@ public class UserController {
 			RA.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 			return "redirect:/";
 		}
+		int uno = (int)session.getAttribute("uno");
 		UserVO userVO = userService.getInfo(user_id); //join의 결과를 resultMap으로 한번에 묶어서 처리
+		ArrayList<QnaVO> qnaList = userService.getUserQnaList(uno);
+		ArrayList<ReviewVO> reviewList = userService.getUserReviewList(uno);
+		model.addAttribute("qnaList", qnaList);
+		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("userVO", userVO);
 			
 		return "user/userMypage";

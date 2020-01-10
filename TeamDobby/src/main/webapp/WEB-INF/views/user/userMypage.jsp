@@ -197,10 +197,17 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>번호</td>
+                                        <td>상품번호</td>
                                         <td>제목</td>
                                         <td>작성일</td>
                                     </tr>
+                                    <c:forEach var="vo" items="${reviewList }">
+                                    <tr>
+                                    	<td>${vo.pno }</td>
+                                    	<td><a href="../review/reviewDetail?review_no=${vo.review_no }">${vo.r_title }</a></td>
+                                    	<td><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
+                                    </tr>
+                                    </c:forEach>
                                 </thead>
                                 
 
@@ -216,10 +223,17 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>번호</td>
+                                        <td>상품번호</td>
                                         <td>제목</td>
                                         <td>작성일</td>
                                     </tr>
+                                    <c:forEach var="vo" items="${qnaList }">
+                                    <tr>
+                                    	<td>${vo.pno }</td>
+                                    	<td><a href="../qna/qnaDetail?qna_no=${vo.qna_no }">${vo.q_title }</a></td>
+                                    	<td><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
+                                    </tr>
+                                    </c:forEach>
                                 </thead>
                                 
                                 

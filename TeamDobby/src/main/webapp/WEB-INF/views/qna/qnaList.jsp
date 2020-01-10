@@ -273,15 +273,15 @@
 	                        <ul class="pagination pagination-sm">
 	                          <!-- 3.이전버튼 활성화 여부 -->
 	                        <c:if test="${pageVO.prev }">
-	                        	<li><a href="freeList?pageNum=${pageVO.startPage-1 }">이전</a></li>
+	                        	<li><a href="freeList?pageNum=${pageVO2.startPage-1 }">이전</a></li>
 	                        </c:if>
 	                        <!-- 1.pageNum처리 -->
-	                        <c:forEach var="num" begin="${pageVO.startPage }" end="${pageVO.endPage }">
-	                        	<li  class="${pageVO.pageNum == num ? 'active': '' }"><a href="qnaList?pageNum=${num }">${num }</a></li>
+	                        <c:forEach var="num" begin="${pageVO2.startPage }" end="${pageVO2.endPage }">
+	                        	<li  class="${pageVO2.pageNum == num ? 'active': '' }"><a href="qnaList?pageNum=${num }">${num }</a></li>
 	                        </c:forEach>
 	                        <!-- 2.다음버튼 활성화여부 -->
-	                        <c:if test="${pageVO.next }">
-	                        	<li><a href="freeList?pageNum=${pageVO.endPage+1 }">다음</a></li>
+	                        <c:if test="${pageVO2.next }">
+	                        	<li><a href="freeList?pageNum=${pageVO2.endPage+1 }">다음</a></li>
 	                        </c:if>
 	                        </ul>
 	                        <button class="btn btn-info" id="qnaRegist">등록</button>
@@ -295,20 +295,6 @@
 	    
 	    
 	    <script>
-	    window.onload = function() {
-			
-			//뒤로가기 실행후에 앞으로가기 했을때 변경된 기록 공백이라면 함수 종료
-			if(history.state == '') {
-				return;
-			}
-					
-			var msg = '${msg}';
-			if(msg != '') {
-				alert(msg);
-				history.replaceState('', null, null); //현재 히스토리 기록을 변경
-			}
-		}
-	    
 	    
 	    var qnaRegist = document.getElementById("qnaRegist");
 	    qnaRegist.onclick = function() {

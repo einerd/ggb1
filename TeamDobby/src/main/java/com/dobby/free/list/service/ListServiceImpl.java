@@ -113,5 +113,10 @@ public class ListServiceImpl implements ListService {
 		// TODO Auto-generated method stub
 		return listMapper.insertSubAddress(addVO, uno);
 	}
+	@Override
+	public int checkProduct(int pno) {
+		// TODO Auto-generated method stub
+		return listMapper.checkProduct(pno);
+	}
 
 }

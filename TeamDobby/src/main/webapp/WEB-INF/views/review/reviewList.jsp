@@ -181,7 +181,6 @@
         
         /*review_list 별 END-------------------*/
     </style>
-	
     
      
 <script type='text/javascript'>
@@ -211,7 +210,7 @@ $(function(){
         <div class="container">
             <div class="row middle">
                 <div class="col-xs-12 col-lg-9 board-table qnalist-wrap">
-                    <div class="titlebox">
+                    <div class="titlebox" id="titletitle">
                         <p>상품후기</p>                        
                     </div>
                     
@@ -247,7 +246,7 @@ $(function(){
 			</div>
                   <!-- ==============================-->
                   
-                    <table class="table table-bordered reviewlist">
+                    <table class="table table-bordered reviewlist" >
                         <thead>
                             <tr>
                                 <th class="starRevth">평점</th>
@@ -265,13 +264,10 @@ $(function(){
                                  	<c:choose>  	
                                 		<c:when test="${i <= vo.starCount }">
                                 			<span class="starR on">★</span>
-                         					
                                 		</c:when>
                                 		<c:otherwise>
                                 			<span class="starR">☆</span>
                                 		</c:otherwise>
-	                               
-	                                  
 	                                </c:choose>
                                 </c:forEach>
                                  
@@ -280,7 +276,7 @@ $(function(){
                                 <td><a href="../review/reviewDetail?review_no=${vo.review_no }">${vo.r_title }</a></td>
                                 <td>${vo.user_id }</td>
                                 <td>
-                                	<fmt:formatDate value="${vo.regdate }" pattern="yyyy년MM월dd일hh시mm분ss초"/>
+                                	<fmt:formatDate value="${vo.regdate }" pattern="yyyy년MM월dd일"/>
                                 </td>
                             </tr>
                         </tbody>
@@ -291,18 +287,18 @@ $(function(){
                     <div class="text-center">
                         <ul class="pagination pagination-sm">
                           <!--이전 button  --> 
-                          <c:if test = "${pageVO.prev }" >
-                          	<li><a href="../productList/productDetail?pno=${vo.pno }&pageNum=${pageVO.startPage-1 }#review-point">이전</a></li>
+                          <c:if test = "${pageVO1.prev }" >
+                          	<li><a href="../productList/productDetail?pageNum=${pageVO1.startPage-1 }&pno=${vo.pno }&path=review#review-point">${num }">이전</a></li>
                           </c:if>
                           
                           <!-- pageNum -->
-                          <c:forEach var="num" begin="${pageVO.startPage }" end="${pageVO.endPage }">
-                          	<li class="${pageVO.pageNum == num ? 'active' : '' }"><a href="../productList/productDetail?pno=${vo.pno }&pageNum=${num }#review-point">${num }</a></li>
+                          <c:forEach var="num" begin="${pageVO1.startPage }" end="${pageVO1.endPage }">
+                          	<li class="${pageVO1.pageNum == num ? 'active' : '' }"><a href="../productList/productDetail?pageNum=${num }&pno=${vo.pno }&path=review#review-point">${num }</a></li>
                           </c:forEach>
                           
                           <!-- 다음 button -->
-                          <c:if test = "${pageVO.next }">
-                          	<li><a href="../productList/productDetail?pno=${vo.pno }&pageNum=${pageVO.endPage+1 }#review-point">다음</a></li>
+                          <c:if test = "${pageVO1.next }">
+                          	<li><a href="../productList/productDetail?pageNum=${pageVO1.endPage+1 }&pno=${vo.pno }&path=review#review-point">${num }">다음</a></li>
                           </c:if>
                         </ul>
                         <button class="btn btn-info" id="reviewRegist">등록</button>
@@ -315,8 +311,11 @@ $(function(){
     </section>
     
     <script>
+  
+    
     	var reviewRegist = document.getElementById("reviewRegist");
 	   	reviewRegist.onclick = function() {
 		   location.href="../review/reviewWrite?pno=${vo.pno }";
 	   	}
     </script>
+    

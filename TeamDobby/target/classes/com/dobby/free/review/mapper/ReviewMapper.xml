@@ -5,10 +5,16 @@
   
   <mapper namespace="com.dobby.free.review.mapper.ReviewMapper">
   	
-  	<!-- 게시글 등록하기(파일업로드) -->
-  	<insert id="upload">
-  		insert into d_review(review_no, user_id, r_title, r_content, r_img_name, r_img_ext, r_uploadpath, r_fileloca, starCount, pno)
-  		values( review_no_seq.nextval, #{user_id}, #{r_title}, #{r_content}, #{r_img_name}, #{r_img_ext}, #{r_uploadpath}, #{r_fileloca}, #{starCount}, #{pno})
+  	<!-- 게시글 등록하기(파일업로드) 파일 있는 경우 -->
+  	<insert id="upload_a">
+  		insert into d_review(review_no, user_id, r_title, r_content, r_img_name, r_img_ext, r_uploadpath, r_fileloca, starCount, pno, uno)
+  		values( review_no_seq.nextval, #{user_id}, #{r_title}, #{r_content}, #{r_img_name}, #{r_img_ext}, #{r_uploadpath}, #{r_fileloca}, #{starCount}, #{pno}, #{uno})
+  	</insert>
+  	
+  	<!-- 게시글 등록하기(파일업로드) 파일 없는 경우 -->
+  	<insert id="upload_b">
+  		insert into d_review(review_no, user_id, r_title, r_content, starCount, pno, uno)
+  		values( review_no_seq.nextval, #{user_id}, #{r_title}, #{r_content}, #{starCount}, #{pno}, #{uno})
   	</insert>
   	
   	
@@ -34,27 +40,55 @@
   		select * from d_review where review_no = #{review_no}
   	</select>
 
-	<!-- 게시글 수정하기 -->
-  	<update id="update">
+	<!-- 게시글 수정하기(업데이트) 파일 있는 경우 -->
+  	<update id="update_a">
   		update d_review set 
   		user_id = #{user_id},
   		r_title = #{r_title},
   		r_content = #{r_content},
-  		starcount = #{starCount},
-  		regdate = sysdate
+  		starCount = #{starCount},
+  		regdate = sysdate, 
+  		r_img_name = #{r_img_name}, 
+  		r_img_ext = #{r_img_ext}, 
+  		r_uploadpath = #{r_uploadpath}, 
+  		r_fileloca = #{r_fileloca},
+  		pno = #{pno},
+  		uno = #{uno}
   		where review_no = #{review_no}
-  		
+  	</update>
+  	
+  	<!-- 게시글 수정하기(업데이트) 파일 없는 경우 -->
+  	<update id="update_b">
+  		update d_review set 
+  		user_id = #{user_id},
+  		r_title = #{r_title},
+  		r_content = #{r_content},
+  		starCount = #{starCount},
+  		regdate = sysdate,
+  		pno = #{pno},
+  		uno = #{uno}
+  		where review_no = #{review_no}
   	</update>
 
+  	<!-- 수정파일 null값 만들기 -->
+  	<delete id="fileNull">
+  		update d_review set r_img_name = null, r_img_ext = null, r_uploadpath = null, r_fileloca = null where review_no = #{review_no}
+  	</delete>
   	
   	<!-- 게시글 삭제하기 -->
   	<delete id="delete">
   		delete from d_review where review_no = #{review_no}
   	</delete>
   	
+  	
   	<select id="getPno" resultType="com.dobby.free.command.ReviewVO">
   		select pno from d_review where review_no = #{rno}
   	</select>
+  	
+  	<select id="fileList" resultType="com.dobby.free.command.ReviewVO">
+  		select * from d_review where review_no = #{review_no}
+  	</select>
+  
   
   
   </mapper>

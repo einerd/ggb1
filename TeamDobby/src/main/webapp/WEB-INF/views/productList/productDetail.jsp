@@ -379,8 +379,7 @@
                         <img src="${pageContext.request.contextPath }/${vo.p_uploadpath }/${vo.p_img_names}${vo.p_img_exts}">
                     </div>
                     <div class="content">
-                        <p>기본부터 건강하게 키운 닭으로 만든 담백하고 고소한 맛!</p>
-                        <p>청양고추의 매콤함과 함께 부드럽고 맛있는 계란으로 만든 스크램블입니다.</p>
+                        <p>${vo.p_detail }</p>
                     </div>
                 </div>
                 <!--상품정보 창END-->
@@ -625,7 +624,23 @@
 		if(msg != "") {
 			alert(msg);
 		}
-	}) 
+	})
+	
+	var pno = location.search;
+	pno = pno.substring(pno.lastIndexOf("=")+1);
+	
+	console.log(pno);
+	
+	$.getJSON(
+	  		"checkProduct/"+pno+"/", // 요청보낼 주소
+	  		function(data) { // 성공시 전달받을 익명함수
+	  			console.log(data);
+	  			if(data == 0) {
+	  				location.href="../common/error";
+	  			}
+	  		}
+	)
+	
 
 	$(".btns").on("click", ".btn", function() {
 		if($(this).val() == 'plus') {
@@ -655,7 +670,9 @@
 	        str = str.replace(/([0-9])([0-9]{3})(,|$)/, "$1,$2$3");
 	    }
 	    return str;
-	}       
+	}
+	
+	
 	
 </script>
 </body>

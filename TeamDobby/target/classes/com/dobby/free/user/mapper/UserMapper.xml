@@ -84,4 +84,18 @@
   		where user_id = #{user_id}
    	</update>
 	
+	<select id="getUserQnaList" resultType="com.dobby.free.command.QnaVO">
+		select * from
+		(select qna_no, pno, uno, sno, user_id, b_history, q_title, q_content, q_img_name,
+		q_img_ext, q_uploadpath, q_fileloca, regdate
+		from d_qna where uno = #{uno} order by regdate desc)
+	</select>
+
+	<select id="getUserReviewList" resultType="com.dobby.free.command.ReviewVO">
+		select * from
+		(select review_no, starcount, user_id, pno, uno, sno, b_history, r_title, r_content, 
+		r_img_name, r_img_ext, r_uploadpath,
+		r_fileloca, regdate from d_review where uno = #{uno} order by regdate desc)
+	</select>
+	
 </mapper>

@@ -1,5 +1,9 @@
 package com.dobby.free.user.service;
 
+import java.util.ArrayList;
+
+import com.dobby.free.command.QnaVO;
+import com.dobby.free.command.ReviewVO;
 import com.dobby.free.command.UserVO;
 
 public interface UserService {
@@ -9,5 +13,7 @@ public interface UserService {
 	public int join(UserVO vo); //회원가입
 	public UserVO getInfo(String user_id); //마이페이지 유저정보
 	public int update(UserVO vo); //마이페이지 업데이트
+	public ArrayList<QnaVO> getUserQnaList(int uno);
+	public ArrayList<ReviewVO> getUserReviewList(int uno);
 
 }

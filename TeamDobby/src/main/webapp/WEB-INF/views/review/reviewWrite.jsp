@@ -55,6 +55,11 @@
     	.top {
     		padding-top: 80px;
     	}
+    	
+    	#form1 {
+    		padding-bottom: 18px;
+    	}
+    	
     </style>
 </head>
 <body> <!-- ----------------------------------여기부터 body입니다.-------------------------------------------- -->
@@ -68,18 +73,30 @@
                     <div class="titlebox titlebox2">
                         <p>상품후기</p>
                     </div>
-                    <form action="regForm"  method="post" id="regForm" name="regForm" enctype="multipart/form-data">
+                    <form action="reviewUpload"  method="post" id="regForm" name="regForm" enctype="multipart/form-data">
                   
                     
                     <table class="table">
                         <tbody class="t-control reviewwrite">
                           <tr>
+                          <td class="t-title" id="sksk">Preview</td>
+                          	<td>
+                          		<div id="form1" >
+                          	 
+                          			<img id="blah" src="">
+                          		
+       							</div>
+                          	</td>
+                          	
+                          </tr>
+                          
+                          <tr>
                              <!--<td>평가</td>-->
                               <td><span class="rating_star"><span style="width: 50%;">Rating</span></span></td>
                               <td>
-                                <div class="starRev" id="star">
+                                <div class="starRev" id="star" >
                                 <!-- $(".starRev").html(str) -->
-                                  <span class="starR">★</span>
+                                  <span class="starR on">★</span>
                                   <span class="starR">★</span>
                                   <span class="starR">★</span>
                                   <span class="starR">★</span>
@@ -89,7 +106,7 @@
                           </tr>
                           <tr>
                             <td class="t-title">UserId</td>
-                            <td><input type="text" class="form-control" name="user_id"  id="user_id" value="${sessionScope.user_id }" readonly="true"></td>
+                            <td><input type="text" class="form-control" name="writer"  id="writer" value="${sessionScope.user_id }" readonly></td>
                           </tr>
                           <tr>
                             <td class="t-title">TITLE</td>
@@ -100,19 +117,23 @@
                             <td><textarea class="form-control" rows="7" name="r_content" id="r_content"></textarea></td>
                           </tr>
                           <tr>
-                           <td class="t-title left">
-                               <input type="file" id="file" placeholder="파일업로드">
+                           <td class="t-title left">PICTURE</td>
+                           <td>
+                               <input type="file" class="form-control" id="file" name="file" placeholder="파일업로드" onchange="readURL(this)" runat="server">
                            </td>
                           </tr>
                           
                         </tbody>
                       </table>
+                       <input type="hidden" id="cnt" name="cnt">
+                       <input type="hidden" id="pno" name="pno">
+                       <input type="hidden" id="uno" name="uno" value="${sessionScope.uno }">
                       </form>
                       
                       
                       <div class="titlefoot">
                           <button class="btn btn-default" id="reviewList">목록</button>
-                          <button type="button" class="btn btn-default" id="uploadBtn">등록</button>
+                          <button type="button" class="btn btn-default" id="reviewUpload">등록</button>
                       </div>
                       
                       
@@ -120,7 +141,7 @@
             </div>
             
         </div>
-        
+       
         
     </section>
     
@@ -129,6 +150,23 @@
 
     
   <script>
+  
+  		//이미지 파일 미리보기
+		  function readURL(input) {
+		      if (input.files && input.files[0]) {
+		          var reader = new FileReader();
+		          reader.onload = function (e) {
+		        	  
+		              $('#blah').attr('src', e.target.result)
+		              .width("480px")            
+		              .height("360px");
+		          };
+		          reader.readAsDataURL(input.files[0]);
+		      }
+		  }
+  		
+  		
+  
   
   		//별 움직임
   		$('.starRev span').click(function(e){
@@ -140,107 +178,65 @@
   	    
   	    
   	    //목록이동
-  	  	var reviewList = document.getElementById("reviewList");
-	    reviewList.onclick = function() {
-	    	var pno = location.search;
-	    	pno = location.search.substring(pno.lastIndexOf("=")+1);
-	    	location.href="../productList/productDetail?pno="+pno+"#review-point";
-	    }
+  	    var reviewList = document.getElementById("reviewList");
+  	    reviewList.onclick = function() {
+  	    	var pno = location.search;
+  	    	pno = pno.substring(pno.lastIndexOf("=")+1);
+     		location.href="../productList/productDetail?pno="+pno+"#review-point";
+  	    }
+  	    
   	   
   	    
   	    
-  	    
-  	    //등록처리
-  	     $(document).ready(function(){
-  	    	$("#uploadBtn").click(function() {
-				regist();	
-			})
-  	     });
-  	     
-  	    
-  	     
-  	    function regist() {
-  	    	
-  	    	//파일 확장자 확인
-  	    	var file = $("#file").val();
-			file = file.slice( file.indexOf(".") + 1 ).toLowerCase();
-			
-			if(file != "jpg" && file !="png" && file != "bmp" && file != null) {
-				alert("이미지 파일(jpg, png, bmp)만 등록 가능합니다");
-				$("#file").val(""); //file태그가 가지고 있는 파일을 비우고 함수종료
-				return false;
-			} else if(user_id == '' /* false */) {
-				alert("로그인이 필요한 서비스 입니다");
-				return false;
-			}
-			
-
-			
-			//ajax폼전송의 핵심 FormData객체 생성
-			var formData = new FormData();
-			var fileData = $("#file");
-			var user_id = $("#user_id").val();
-			var r_title = $("#r_title").val(); 
-			var r_content = $("#r_content").val();
-			var pno = location.search;
-  	    	pno = location.search.substring(pno.lastIndexOf("=")+1);
-			
-			let cnt = 0;
-			var list = document.querySelectorAll(".starR");
-			for(var i = 0; i < list.length; i++) {
-				if(list[i].getAttribute("class").indexOf("on") != -1) {
-					cnt++;
+  	   //등록처리
+  	   var reviewUpload = document.getElementById("reviewUpload");
+  	   reviewUpload.onclick = function() {
+  		   
+  		   var file = document.regForm.file.value;
+  		   file = file.slice(file.indexOf(".") + 1).toLowerCase();
+  		   
+  		   if(file != "jpg" && file !="png" && file !="bmp" && file != "") {
+  			   alert("이미지 파일(jpg, png, bmp)만 등록 가능합니다");
+  			   document.regForm.file.value(""); //file태그 파일을 비우고 함수종료
+  			   return;
+  		   }else if(document.regForm.writer.value == "") {
+  			   alert("로그인이 필요한 서비스 입니다");
+  			   location.href="/test";
+  			   return;
+  		   }else if(document.regForm.r_title.value == "") {
+  			   alert("제목을 입력해주세요");
+  			   document.regForm.r_title.focus();
+  			   return;
+  		   }else if(document.regForm.r_content.value == "") {
+  			   alert("내용을 입력해주세요");
+  			   document.regForm.r_content.focus();
+  			   return;
+  		   }else if(confirm("등록하시겠습니까?")){
+  			    //별값
+  			 	let cnt = 0;
+				var list = document.querySelectorAll(".starR");
+				for(var i = 0; i < list.length; i++) {
+					if(list[i].getAttribute("class").indexOf("on") != -1) {
+						cnt++;
+					}
 				}
-			}
-			formData.append("starCount", cnt);
-			formData.append("file", $("#file")[0].files[0]); //file이름으로  파일정보를 폼에 저장
-			formData.append("user_id", user_id);
-			formData.append("r_title", r_title); 
-			formData.append("r_content", r_content);
-			formData.append("pno", pno);
-			
-			
-  	    	
-		
-			
-  	    	if(r_title == "") {
-  	    		alert("제목을 입력해주세요");
-  	    		$("#r_title").focus();
-  	    		return;
-  	    	}
-  	    	
-  	    	if(r_content == "") {
-  	    		alert("내용을 입력해주세요");
-  	    		$("#r_content").focus();
-  	    		return;
-  	    	}
-  	    	
-  	    	var ys = confirm("게시글을 등록하시겠습니까?");
-  	    	
-  	    	if(ys) {
-  	    		
-  	    		$.ajax({
-  	    			
-  	    			url : "reviewUpload",
-  	    			type : "POST",
-  	    			data : formData,
-  	    			processData: false, //false면 post타입
-  	    			contentType: false, //false면 multipart/form-data
-  	    			success : function(result) {
-  	    				if(result == 'success') {
-  	    					alert("게시글이 성공적으로 등록되었습니다");
-  	    					location.href="../productList/productDetail?pno="+pno+"#review-point";
-  	    				}
-  	    			
-  	    			},
-  	    			error : function(result) {
-  	    				
-  	    			}
-  	    			
-  	    		});
-  	    	}
-  	    }  
-  	    
+				
+				//pno값
+				var pno = location.search;
+	  	    	pno = location.search.substring(pno.lastIndexOf("=")+1);
+	  	 		
+	  	 		document.getElementById("pno").setAttribute("value", pno);
+	  	 		
+	  	 		document.getElementById("cnt").setAttribute("value", cnt);
+	  	 		
+	  	    	document.regForm.submit(); //폼값 전송
+				
+  		   }
+  		   
+  	   }
+  	   
+  	   
+
   
 	
 	</script>
