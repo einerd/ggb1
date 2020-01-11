@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,6 +61,46 @@
         	padding-top: 80px;
         }
         /* 고객문의_write END ----------------------*/
+        
+        /* qna, review, 고객문의 공통 ----------------------------------*/
+	
+        section {
+            margin-top: 70px;
+        }
+
+        .text-center .btn {
+            float: right; /*우측정렬*/
+            border: 0; /*보더스타일 해제*/
+            border-radius: 0; /*윤곽0*/
+            padding: 5px 10px; /*버튼의 크기를 조정, 페이지네이션에 맞춤*/
+        }
+
+        .titlebox {
+            width: 250px;
+            text-align: center;
+            margin: 70px auto; /*가운데정렬*/
+            height: 40px; /*세로정렬*/
+            line-height: 40px; /*세로정렬*/
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+        }
+
+        
+        
+        .board-title {
+            width: 300px;
+        }
+        
+        .table-bordered > thead > tr > th {
+            background-color: #ccc; /*배경색*/
+            color:#777; /*글씨색*/
+        }
+          
+            .titlefoot{
+            float:right;
+        }
+
+	/* qna, review, 고객문의 공통 END ----------------------------------*/
     
     </style>
 </head>
@@ -108,9 +149,13 @@
                              
                               <td class="t-title">
                               <div>
-                               <div class="middle">
+                                 <div class="middle" style="
+	                              <c:if test='${qnaVO.q_fileloca eq null}'>display:none;</c:if>
+	                              <c:if test='${qnaVO.q_fileloca != null}'>display:visible;</c:if>
+                               ">
                                 <!--<img width="500" src="../resources/img/d1.jpg"> -->
-                                <img width="500" src="${pageContext.request.contextPath }/${qnaVO.q_uploadpath }/${qnaVO.q_img_name}${qnaVO.q_img_ext}" alt="등록된 이미지가 없습니다">
+                                <img width="500" src="${pageContext.request.contextPath }/resources/img/qna/${qnaVO.q_fileloca }/${qnaVO.q_img_name}">
+                      
                                 </div>
                                 </div>
                               </td>
@@ -129,31 +174,16 @@
                              <td class="t-title">Category</td>
                             <td>
 								<div class="category_select" >
-									<select class=" tune" id="category" name="category" style="width: 127px;" >
+									<select disabled  class=" tune" id="category" name="category" style="width: 127px;">
 										<option value="상품" ${qnaVO.b_history eq '상품' ? 'selected' : '' }>상품</option>
 										<option value="배송" ${qnaVO.b_history eq '배송' ? 'selected' : '' }>배송</option>
 										<option value="반품/환불" ${qnaVO.b_history eq '반품/환불' ? 'selected' : '' }>반품/환불</option>
 										<option value="교환/변경" ${qnaVO.b_history eq '교환/변경' ? 'selected' : '' }>교환/변경</option>
 										<option value="기타" ${qnaVO.b_history eq '기타' ? 'selected' : '' }>기타</option>
-									<!--  
-										<option value="상품" <c:if test="${qnaVO.b_history eq '상품'}">selected</c:if>>상품</option>
-										<option value="배송" <c:if test="${qnaVO.b_history eq '배송'}" >selected</c:if>>배송</option>			
-										<option value="반품/환불" <c:if test="${qnaVO.b_history eq '반품/환불'}" >selected</c:if>>반품/환불</option>		
-										<option value="교환/변경" <c:if test="${qnaVO.b_history eq '교환/변경'}" >selected</c:if>>교환/변경</option>		
-										<option value="기타" <c:if test="${qnaVO.b_history eq '기타'}">selected</c:if>>기타</option>
-									-->
-										<!-- <option value=1 <c:if test="${class_m == 1}">selected</c:if>>1학년</option> -->
-										<!-- <option value="dooly" <c:if test="${Name eq 'dooly'}">selected</c:if>>둘리</option> -->
+									
 								
 									</select>
-										
-										<!--
-										<option value="상품" >상품</option>
-										<option value="배송">배송</option>
-										<option value="반품/환불">반품/환불</option>
-										<option value="교환/변경">교환/변경</option>
-										<option value="기타">기타</option ></select>
-										-->
+								
 								</div>
 							</td>
                          </tr>
@@ -173,16 +203,7 @@
                             <td class="t-title">CONTENT</td>
                             <td><textarea class="form-control" rows="7" name="q_content" id="q_content" readonly>${qnaVO.q_content }</textarea></td>
                           </tr>
-                           <!-- 
-                          <tr>
-                           <td class="t-title left"> 
-                               <button class="btn btn-default" id="q_img_name">    파일업로드    </button>
-                           </td>
-                           <td>
-                               <input type="text" class="form-control" value="파일명.jpg" readonly>
-                           </td>
-                          </tr>
-                           -->
+                          
                         </tbody>
                       </table>
                      </form>
@@ -224,15 +245,7 @@
 
 	    var qnaDelete = document.getElementById("qnaDelete");
 	    qnaDelete.onclick = function() {
-	    	var qno = location.search;
-  	    	qno = qno.substring(qno.lastIndexOf("=")+1);
-  	    	
-  	    	$.getJSON(
-  	  			"../qna/getPno/"+qno+"/", // 요청보낼 주소
-  	  			function(data) { // 성공시 전달받을 익명함수
-			    	location.href = "qnaDelete?qna_no="+${qnaVO.qna_no}+"&pno="+data.pno;
-  	  			}
-  	  	    )
+	    	location.href = "qnaDelete?qna_no="+${qnaVO.qna_no};
 	    }
 	    
 	    

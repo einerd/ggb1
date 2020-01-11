@@ -58,7 +58,7 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li><a href="${pageContext.request.contextPath }/user/userMypage"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
+                            <li><a href="${pageContext.request.contextPath }/productList/purchaseHistory"><span class="glyphicon glyphicon-shopping-cart"></span> 구매내역</a></li>
                             <li class="divider"></li>
                             <li><a href="${pageContext.request.contextPath }/productList/basketList"><span class="glyphicon glyphicon-log-in"></span> 장바구니</a></li>
                         </ul>

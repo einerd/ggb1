@@ -1,5 +1,6 @@
 package com.dobby.free.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -343,15 +344,33 @@ public class ListController {
 	@RequestMapping(value="/productDetail")
 	public String productDetail(@RequestParam("pno") int pno,
 								@RequestParam(value="path", required=false) String path,
+								@RequestParam(value="startDate", required=false) Timestamp startDate,
+								@RequestParam(value="endDate", required=false) Timestamp endDate,
 								Model model, Criteria cri) {
-		ProductDetailVO vo = listService.searchProductInfo(pno);
-		ArrayList<ReviewVO> list = reviewService.getList(cri, pno);
-		ArrayList<QnaVO> list2 = QnaBoardService.getList(cri, pno);
+		if(path == null) path = "";
 		
-		int total1 = reviewService.getTotal();
-		int total2 = QnaBoardService.getTotal();
+		System.out.println("스타트데이트: " + startDate);
+		System.out.println("엔드데이트: " + endDate);
+		System.out.println("패스: " + path);
+		int total1 = reviewService.getTotal(startDate, endDate, pno);
+		int total2 = QnaBoardService.getTotal(startDate, endDate, pno);
 		PageVO pageVO1 = new PageVO(cri, total1);
 		PageVO pageVO2 = new PageVO(cri, total2);
+		ArrayList<ReviewVO> list = reviewService.getList(cri, pno, startDate, endDate);
+		ArrayList<QnaVO> list2 = QnaBoardService.getList(cri, pno, startDate, endDate);
+		
+		if(path.equals("review")) {
+			pageVO1 = new PageVO(cri, total1);
+			pageVO2.setPageNum(1);
+			list2 = QnaBoardService.getList(new Criteria(), pno, startDate, endDate);
+		}else if(path.equals("qna")) {
+			pageVO1.setPageNum(1);
+			pageVO2 = new PageVO(cri, total2);
+			list = reviewService.getList(new Criteria(), pno, startDate, endDate);
+		}
+		
+		ProductDetailVO vo = listService.searchProductInfo(pno);
+		
 		model.addAttribute("pageVO1", pageVO1);
 		model.addAttribute("pageVO2", pageVO2);
 		

@@ -78,6 +78,10 @@
         	float: none;        
         	margin: 0 auto;
         }
+        
+        .table {
+        	overflow: auto;
+        }
 		
 		
 	</style>
@@ -203,7 +207,7 @@
                                     </tr>
                                     <c:forEach var="vo" items="${reviewList }">
                                     <tr>
-                                    	<td>${vo.pno }</td>
+                                    	<td><a href="../productList/productDetail?pno=${vo.pno }">${vo.pno }</a></td>
                                     	<td><a href="../review/reviewDetail?review_no=${vo.review_no }">${vo.r_title }</a></td>
                                     	<td><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
                                     </tr>
@@ -221,6 +225,7 @@
                             <p>*내 게시글 관리</p>
                             <form>
                             <table class="table">
+                            
                                 <thead>
                                     <tr>
                                         <td>상품번호</td>
@@ -229,7 +234,7 @@
                                     </tr>
                                     <c:forEach var="vo" items="${qnaList }">
                                     <tr>
-                                    	<td>${vo.pno }</td>
+                                    	<td><a href="../productList/productDetail?pno=${vo.pno }">${vo.pno }</a></td>
                                     	<td><a href="../qna/qnaDetail?qna_no=${vo.qna_no }">${vo.q_title }</a></td>
                                     	<td><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
                                     </tr>

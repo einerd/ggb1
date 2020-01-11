@@ -1,5 +1,6 @@
 package com.dobby.free.review.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.dobby.free.command.ReviewVO;
@@ -8,8 +9,8 @@ import com.dobby.free.util.Criteria;
 public interface ReviewService {
 	
 	public void regist(ReviewVO vo); //등록하기
-	public ArrayList<ReviewVO> getList(Criteria cri, int pno); //목록 불러오기
-	public int getTotal(); //페이징 전체 게시글 수
+	public ArrayList<ReviewVO> getList(Criteria cri, int pno, Timestamp startDate, Timestamp endDate); //목록 불러오기
+	public int getTotal(Timestamp startDate, Timestamp endDate, int pno); //페이징 전체 게시글 수
 	public ReviewVO detail(int review_no); //상세, 수정
 	public boolean update_a(ReviewVO vo); //업데이트 (파일 있는 경우)
 	public boolean update_b(ReviewVO vo); //업데이트 (파일 없는 경우)

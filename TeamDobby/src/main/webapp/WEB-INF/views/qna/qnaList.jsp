@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
-
     <style type="text/css">
         
         
@@ -126,75 +125,27 @@
         
         /* 날짜(캘린더) 솔팅 END---------------------------*/
         
+        .datepicker{
+        	border : 1px solid;
+        	border-color: #eeeeee;
+        }
+        
+        
+        /*-------------------------------------*/
+        /*-------------------------------------*/
+        /*-------------------------------------*/
+         .searchDate{overflow:hidden;margin-bottom:10px;*zoom:1}
+            .searchDate:after{display:block;clear:both;content:''}
+            .searchDate li{position:relative;float:left;margin:0 7px 0 0}
+            .searchDate li .chkbox2{display:block;text-align:center}
+            .searchDate li .chkbox2 input{position:absolute;z-index:-1}
+            .searchDate li .chkbox2 label{display:block;width:40px;height:26px;font-size:14px;font-weight:bold;color:#fff;text-align:center;line-height:25px;text-decoration:none;cursor:pointer;background:#a5b0b6}
+            .searchDate li .chkbox2.on label{background:#ec6a6a}
+        
+        /*-------------------------------------*/
         
     </style>
-
-	<script type='text/javascript'>
-		$(function(){
-		        $('.input-group.date').datepicker({
-		            calendarWeeks: false,
-		            todayHighlight: true,
-		            autoclose: true,
-		            format: "yyyy/mm/dd",
-		            language: "kr"
-		        });
-		    });
-		
-		;(function($){
-			$.fn.datepicker.dates['kr'] = {
-				days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
-				daysShort: ["일", "월", "화", "수", "목", "금", "토", "일"],
-				daysMin: ["일", "월", "화", "수", "목", "금", "토", "일"],
-				months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-				monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-			};
-		}(jQuery));
-	        
-    </script>      
-
-   <!-- 
-   <script type="text/javascript">
-	    $(document).ready(function () {
-	            $.datepicker.setDefaults($.datepicker.regional['ko']); 
-	            $( "#startDate" ).datepicker({
-	                 changeMonth: true, 
-	                 changeYear: true,
-	                 nextText: '다음 달',
-	                 prevText: '이전 달', 
-	                 dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	                 dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'], 
-	                 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-	                 monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-	                 dateFormat: "yymmdd",
-	                 maxDate: 0,                       // 선택할수있는 최소날짜, ( 0 : 오늘 이후 날짜 선택 불가)
-	                 onClose: function( selectedDate ) {    
-	                      //시작일(startDate) datepicker가 닫힐때
-	                      //종료일(endDate)의 선택할수있는 최소 날짜(minDate)를 선택한 시작일로 지정
-	                     $("#endDate").datepicker( "option", "minDate", selectedDate );
-	                 }    
 	 
-	            });
-	            $( "#endDate" ).datepicker({
-	                 changeMonth: true, 
-	                 changeYear: true,
-	                 nextText: '다음 달',
-	                 prevText: '이전 달', 
-	                 dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	                 dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'], 
-	                 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-	                 monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-	                 dateFormat: "yymmdd",
-	                 maxDate: 0,                       // 선택할수있는 최대날짜, ( 0 : 오늘 이후 날짜 선택 불가)
-	                 onClose: function( selectedDate ) {    
-	                     // 종료일(endDate) datepicker가 닫힐때
-	                     // 시작일(startDate)의 선택할수있는 최대 날짜(maxDate)를 선택한 시작일로 지정
-	                     $("#startDate").datepicker( "option", "maxDate", selectedDate );
-	                 }    
-	 
-	            });    
-	    });
-	</script>
- -->
       
 	    <section class="top">
 	        <div class="container">
@@ -204,38 +155,70 @@
 	                        <p>상품문의</p>                        
 	                    </div>
 	                    
+ 
 	                 <!-- ==============================-->
+					<form id="dateSearchForm" name="dateSearchForm" method="post" action="productDetail?pno=${vo.pno }#qna-point">
 	                  <div class="date_check_box">
-					<form name="dateSearch" method="get" action="searchForm">
-						<input type="hidden" name="pno" value="">
-						<input type="hidden" name="uno" value="">
-					<!-- 
-						<input type="hidden" name="memNo" value="">
-						<input type="hidden" name="noheader" value="">
-					 -->
-						<h3> 조회기간 </h3>
+				
+						<input type="hidden" name="pno" id="pno" value="${vo.pno }">
+					 	<input type="hidden" id="startDate" name="startDate" value="">
+						<input type="hidden" id="endDate" name="endDate" value="">
+					
+						<h3 style="padding-top:10px;"> 조회기간 </h3>
 						<div class="date_check_list" data-target-name="rangDate[]">
-							<button type="button" data-value="0" class="on">오늘</button>
-							<button type="button" data-value="7">7일</button>
-							<button type="button" data-value="30">1개월</button>
-							<button type="button" data-value="90">3개월</button>
-							<button type="button" data-value="365">1년</button>
+						
+                    
+                        <ul class="searchDate">
+                            <li>
+                                <span class="chkbox2">
+                                    <input type="radio" name="dateType" id="dateType1" onclick="setSearchDate('0d')"/>
+                                    <label for="dateType1">당일</label>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="chkbox2">
+                                    <input type="radio" name="dateType" id="dateType3" onclick="setSearchDate('1w')"/>
+                                    <label for="dateType3">1주</label>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="chkbox2">
+                                    <input type="radio" name="dateType" id="dateType5" onclick="setSearchDate('1m')"/>
+                                    <label for="dateType5">1개월</label>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="chkbox2">
+                                    <input type="radio" name="dateType" id="dateType6" onclick="setSearchDate('3m')"/>
+                                    <label for="dateType6">3개월</label>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="chkbox2">
+                                    <input type="radio" name="dateType" id="dateType7" onclick="setSearchDate('6m')"/>
+                                    <label for="dateType7">6개월</label>
+                                </span>
+                            </li>
+                        </ul>
+                        
+                   
+                
 						</div>
+						
 						<!-- //date_check_list -->
-						<div class="date_check_calendar">
-						    <div class="input-group date startDate datepicker">
-	                        <input type="text" id="startDate" name="startDate" class="anniversary js_datepicker input-group-addon" value=""></div> 
-	                        <div class="date_check_calendar">
+						<div class="date_check_calendar" style="padding-top: 14px;">
+	                        <input type="text" id="datepicker1" name="datepicker1">
+	                        <span class="glyphicon glyphicon-calendar"></span></div> 
+	                        <div class="date_check_calendar ">
 	                        <p>~</p>
 	                        </div>
-	                        <div class="input-group date endDate datepicker">
-	                        <input type="text" id="endDate" name="endDate" class="anniversary js_datepicker  input-group-addon" value=""></div>
+	                       <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
 						</div>
 						<!-- //date_check_calendar -->
 	
-						<button type="submit" class="btn_date_check" id="calsearch"><em>조회</em></button>
-					</form>
+						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
 				</div>
+					</form>
 				<!-- 검색 클릭시 pageNum을 1부터 시작하게 처리 -->
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" name="amount" value="${pageVO.cri.amount }">
@@ -246,7 +229,7 @@
 	                    
 	                        <thead>
 	                            <tr>
-	                                <th>번호</th>
+	                                <th width="100px">분류</th>
 	                                <th class="board-title">제목</th>
 	                                <th>작성자</th>
 	                                <th>등록일</th>
@@ -255,7 +238,7 @@
 	                        <c:forEach var="vo" items="${QnaList }">
 	                        <tbody>
 	                            <tr>
-	                                <td>${vo.qna_no }</td>
+	                                <td>${vo.b_history }</td>
 	                                <td><a href="../qna/qnaDetail?qna_no=${vo.qna_no }">${vo.q_title }</a></td>
 	                                <td>${vo.user_id }</td>
                                 	<td>
@@ -273,15 +256,15 @@
 	                        <ul class="pagination pagination-sm">
 	                          <!-- 3.이전버튼 활성화 여부 -->
 	                        <c:if test="${pageVO.prev }">
-	                        	<li><a href="freeList?pageNum=${pageVO2.startPage-1 }">이전</a></li>
+	                        	<li><a href="../productList/productDetail?pageNum=${pageVO2.startPage-1 }&pno=${vo.pno}&path=qna#qna-point">이전</a></li>
 	                        </c:if>
 	                        <!-- 1.pageNum처리 -->
 	                        <c:forEach var="num" begin="${pageVO2.startPage }" end="${pageVO2.endPage }">
-	                        	<li  class="${pageVO2.pageNum == num ? 'active': '' }"><a href="qnaList?pageNum=${num }">${num }</a></li>
+	                        	<li  class="${pageVO2.pageNum == num ? 'active': '' }"><a href="../productList/productDetail?pageNum=${num }&pno=${vo.pno}&path=qna#qna-point"">${num }</a></li>
 	                        </c:forEach>
 	                        <!-- 2.다음버튼 활성화여부 -->
 	                        <c:if test="${pageVO2.next }">
-	                        	<li><a href="freeList?pageNum=${pageVO2.endPage+1 }">다음</a></li>
+	                        	<li><a href="../productList/productDetail?pageNum=${pageVO2.endPage+1 }&pno=${vo.pno}&path=qna#qna-point"">다음</a></li>
 	                        </c:if>
 	                        </ul>
 	                        <button class="btn btn-info" id="qnaRegist">등록</button>
@@ -295,6 +278,93 @@
 	    
 	    
 	    <script>
+	    window.onload = function() {
+			
+		    $(function(){
+		        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
+		        $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd' }).bind("change",function(){
+		            var minValue = $(this).val();
+		            minValue = $.datepicker.parseDate("yy-mm-dd", minValue);
+		            minValue.setDate(minValue.getDate()+1);
+		            $("#datepicker2").datepicker( "option", "minDate", minValue );
+		        })
+		});
+		    
+		    
+		    
+			var calsearch = document.getElementById("calsearch");
+		    calsearch.onclick = function() {
+		    			var pno = location.search;
+		    	    	pno = pno.substring(pno.lastIndexOf("=")+1);
+		    	    	
+		    	    	$("#pno").val(pno);
+		    	    	console.log(pno);
+		    	    	console.log($("#pno").val());
+		    	   
+		    	    	//alert(document.getElementById("datepicker1").value);
+		    	    	//alert(document.getElementById("datepicker2").value);
+		    	    	
+		    	    	document.getElementById("startDate").setAttribute("value", document.getElementById("datepicker1").value+" 00:00:00");
+		    	    	document.getElementById("endDate").setAttribute("value", document.getElementById("datepicker2").value+" 23:59:59");
+		    	    	
+		    	    	
+		    	    	//alert(document.getElementById("startDate").value);
+		    	    	//alert(document.getElementById("endDate").value);
+		    	    	
+// 		    	    	document.getElementById("startDate").setDate((document.getElementById("startDate").value).getDate()+1)
+// 		    	    	document.getElementById("endDate").setDate((document.getElementById("endDate").value).getDate()+1)
+		    	    	
+		    	    	
+		    	    	//alert(document.getElementById("startDate").value);
+		    	    	//alert(document.getElementById("endDate").value);
+		    	    	console.log(document.getElementById("datepicker1").value);
+		    	    	console.log(document.getElementById("datepicker2").value);
+		    	    	//$("datepicker3").value("datepicker1".value());
+		    	    	//$("datepicker4").value("datepicker2".value());
+		    	    	console.log(document.getElementById("startDate").value)
+		    	    	console.log(document.getElementById("endDate").value)
+		     	    	$("#dateSearchForm").submit();
+
+		    		}
+		    	}
+			
+			//localhost:8181/test/productList/productDetailB?pno=27&startDate=2020-01-01 00:00:00&endDate=2020-01-08 00:00:00
+		
+					
+		 function setSearchDate(start){
+
+				var num = start.substring(0,1);
+				var str = start.substring(1,2);
+
+				var today = new Date();
+
+				//var year = today.getFullYear();
+				//var month = today.getMonth() + 1;
+				//var day = today.getDate();
+				
+				var endDate = $.datepicker.formatDate('yy-mm-dd', today);
+				$('#datepicker2').val(endDate);
+				
+				if(str == 'd'){
+					today.setDate(today.getDate() - num);
+				}else if (str == 'w'){
+					today.setDate(today.getDate() - (num*7));
+				}else if (str == 'm'){
+					today.setMonth(today.getMonth() - num);
+					today.setDate(today.getDate() + 1);
+				}
+
+				var startDate = $.datepicker.formatDate('yy-mm-dd', today);
+				$('#datepicker1').val(startDate);
+						
+				// 종료일은 시작일 이전 날짜 선택하지 못하도록 비활성화
+				$("#datepicker2").datepicker( "option", "minDate", startDate );
+				
+				// 시작일은 종료일 이후 날짜 선택하지 못하도록 비활성화
+				$("#datepicker1").datepicker( "option", "maxDate", endDate );
+
+			}
+	    
 	    
 	    var qnaRegist = document.getElementById("qnaRegist");
 	    qnaRegist.onclick = function() {
@@ -302,22 +372,48 @@
 	    }
 	    
 	    
-	    /* var calsearch = document.getElementById("calsearch");
-	    calsearch.onclick = function() {
-    		
-    		if(document.dateSearch.rangDate1.value == '' ) {
-    			alert("날짜를 입력해주세요");
-    			document.regForm.rangDate1.focus();
-    			return; //함수 종료
-    		} else if(document.dateSearch.rangDate2.value == '') {
-    			alert("날짜를 입력해주세요");
-    			document.regForm.rangDate2.focus();
-    			return;
-    		} else {
-    			document.dateSearch.submit(); //폼의 서브밋기능
-    		}
-    	} */
+	    
+	    $(function() {
+	        $("#datepicker1, #datepicker2").datepicker({
+	            dateFormat: 'yy-mm-dd',
+	            	autoclose : true,
+	            	todayHighlight : true ,
+	            	toggleActive : true,
+	            	weekStart : 0 ,
+	            	changeMonth: true,
+	                changeYear: true,
+	            	language : "ko"
+	            	
+	        });
+
+	        $('#datepicker1').datepicker();
+	        $('#datepicker1').datepicker("option", "maxDate", $("#datepicker2").val());
+	        $('#datepicker1').datepicker("option", "onClose", function ( selectedDate ) {
+	            $("#datepicker2").datepicker( "option", "minDate", selectedDate );
+	        });
+	     
+	        $('#datepicker2').datepicker();
+	        $('#datepicker2').datepicker("option", "minDate", $("#datepicker1").val());
+	        $('#datepicker2').datepicker("option", "onClose", function ( selectedDate ) {
+	            $("#datepicker1").datepicker( "option", "maxDate", selectedDate );
+	        });
+	        
+	    });
+	   
+	    
+	    $.datepicker.setDefaults({
+	        showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	    });
+	    
+	    
+	    $('#datepicker2').setDefaults({
+	       maxDate: "0" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)    
+	    });
+		
+	    
+	    
     	
 	    
 	    
 	    </script>
+	

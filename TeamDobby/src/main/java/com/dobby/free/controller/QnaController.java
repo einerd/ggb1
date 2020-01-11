@@ -2,9 +2,11 @@ package com.dobby.free.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dobby.free.command.ProductDetailVO;
 import com.dobby.free.command.QnaVO;
+import com.dobby.free.command.ReviewVO;
 import com.dobby.free.list.service.ListService;
 import com.dobby.free.qna.service.QnaBoardService;
+import com.dobby.free.util.Criteria;
+import com.dobby.free.util.PageVO;
 
 @Controller
 @RequestMapping("/qna")
@@ -61,7 +66,7 @@ public class QnaController {
 				Date date = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				String q_fileloca = sdf.format(date);
-				String q_uploadpath = "F:\\KJH_PROJECT\\workspace\\TeamDobby\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
+				String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
 				
 				File folder = new File(q_uploadpath);
 				if( !folder.exists()) {
@@ -120,6 +125,7 @@ public class QnaController {
 			vo.setQ_content(q_content);
 			vo.setQ_title(q_title);
 			vo.setUno(uno);
+			System.out.println("파일없는거에서 뭐받나 보자"+vo.toString());
 			QnaBoardService.registB(vo);
 			RA.addFlashAttribute("msg", "게시물이 정상적으로 등록되었습니다");
 			System.out.println("여기까진왔니?");
@@ -161,22 +167,21 @@ public class QnaController {
 		return "qna/qnaModify";
 	}
 	
+
+
+	// 상품 수정
 	
-	
-	
-	
-	
-	
-	// 화면수정 기능
-	@RequestMapping(value = "/qnaUpdate")
+	@RequestMapping(value = "/qnaUpdate", method = RequestMethod.POST)
 	public String qnaUpdate(@RequestParam("file") MultipartFile file,
 			 				@RequestParam("pno") int pno,
 			 				@RequestParam("uno") int uno,
-			 				@RequestParam("qna_no") int qno,
+			 				@RequestParam("qna_no") int qna_no,
 			 				@RequestParam("b_history") String b_history,
 			 				@RequestParam("q_title") String q_title,
 			 				@RequestParam("q_content") String q_content,
-			 				@RequestParam("user_id") String user_id, RedirectAttributes RA) {
+			 				@RequestParam("user_id") String user_id, RedirectAttributes RA) throws Exception {
+		//logger.info("post goods modify");
+		
 		QnaVO vo = new QnaVO();
 		vo.setB_history(b_history);
 		vo.setUser_id(user_id);
@@ -184,72 +189,161 @@ public class QnaController {
 		vo.setQ_content(q_content);
 		vo.setQ_title(q_title);
 		vo.setUno(uno);
-		vo.setQna_no(qno);
-		boolean result = QnaBoardService.update(vo);
-
-		if (result) {
-			RA.addFlashAttribute("msg", "게시물이 수정되었습니다");
-		} else {
-			RA.addFlashAttribute("msg", "게시물 수정이 실패했습니다");
-		}
-
-		return "redirect:/productList/productDetail?pno="+pno+"#qna-point";
-
-	}
-	
-	
-	//----------------------------------------------------------------------------
-	
-	// 상품 수정
-	/*
-	@RequestMapping(value = "/qnaUpdate", method = RequestMethod.POST)
-	public String qnaUpdate(QnaVO vo, MultipartFile file, HttpServletRequest req) throws Exception {
-		//logger.info("post goods modify");
+		vo.setQna_no(qna_no);
+		
 		
 		// 새로운 파일이 등록되었는지 확인
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 			// 기존 파일을 삭제
-			new File(vo.getQ_uploadpath() + req.getParameter("gdsImg")).delete();
-			new File(vo.getQ_uploadpath() + req.getParameter("gdsThumbImg")).delete();
+			//new File(vo.getQ_uploadpath() + req.getParameter("gdsImg")).delete();
+			//new File(vo.getQ_uploadpath() + req.getParameter("gdsThumbImg")).delete();
 			
-			// 새로 첨부한 파일을 등록
-			String imgUploadPath = uploadPath + File.separator + "imgUpload";
-			String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-			String fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath);
 			
-			vo.setGdsImg(File.separator + "imgUpload" + ymdPath + File.separator + fileName);
-			vo.setGdsThumbImg(File.separator + "imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
+			/*
+			QnaVO vo = new QnaVO();
+			vo.setB_history(b_history);
+			vo.setUser_id(user_id);
+			vo.setPno(pno);
+			vo.setQ_content(q_content);
+			vo.setQ_title(q_title);
+			vo.setUno(uno);
+			vo.setQna_no(qna_no);
+			*/
+
+			QnaVO oldvo = QnaBoardService.getInfo(qna_no);
 			
-		} else {  // 새로운 파일이 등록되지 않았다면
+			File oldfile=new File(oldvo.getQ_uploadpath()+"\\"+oldvo.getQ_img_name());
+			
+			//System.out.println("★★★★★이걸봐:"+oldvo.getQ_uploadpath()+oldvo.getQ_img_name());
+			
+			if( oldfile.exists() ){
+				if(oldfile.delete()){ 
+					System.out.println("파일삭제 성공"); 
+					
+				}else{ System.out.println("파일삭제 실패"); } 
+				
+			}else{ System.out.println("파일이 존재하지 않습니다."); 
+			}
+
+			
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			String q_fileloca = sdf.format(date);
+			String q_uploadpath = "D:\\jaehyun_spring\\workspace\\SpringTMP\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
+			
+			File folder = new File(q_uploadpath);
+			if( !folder.exists()) {
+				folder.mkdir(); //폴더생성
+			}
+//			String writer = (String)session.getAttribute("uno");
+			
+			//파일명변경 ex)238b0dc88dad4f489050ce00326f5cf2.jpg
+			UUID uuid = UUID.randomUUID();
+			String uuids = uuid.toString().replaceAll("-", "");
+		
+			String fileRealName = file.getOriginalFilename();//실제파일명
+			long size = file.getSize(); //파일크기 
+			String q_img_ext = fileRealName.substring( fileRealName.lastIndexOf(".")  , fileRealName.length());//파일확장자
+			String q_img_name = uuids + q_img_ext; //변경해서 저장할 파일명
+			
+			System.out.println("uuid"+uuid);
+			System.out.println("사진리얼네임"+fileRealName);
+			System.out.println("q_img_ext"+q_img_ext);
+			System.out.println("q_img_name"+q_img_name);
+			
+			//3 업로드
+			File saveFile = new File(q_uploadpath + "\\" + q_img_name);
+			file.transferTo(saveFile); //spring의 파일 업로드메서드
+			
+			vo.setQ_img_name(q_img_name);
+			vo.setQ_img_ext(q_img_ext);
+			vo.setQ_uploadpath(q_uploadpath);
+			vo.setQ_fileloca(q_fileloca);
+			
+			
+			//4 DB에 insert작업
+//			QnaVO vo = new QnaVO(0, writer, uploadPath, fileLoca, fileName, fileRealName, content, null);
+			QnaVO vo2 = new QnaVO(qna_no, pno, uno, 0, b_history, q_title, q_content, q_img_name, q_img_ext, q_uploadpath, q_fileloca, null);
+			vo2.setUser_id(user_id);
+			System.out.println("vo2:"+vo2.toString());//업로드메서드
+			boolean result = QnaBoardService.updateA(vo2);
+			
+			
+			System.out.println("결과!!:"+result);
+			
+			
+
+			if(result) {
+				RA.addFlashAttribute("msg", "게시물이 정상적으로 수정되었습니다");
+				return "redirect:/productList/productDetail?pno="+pno+"#qna-point";
+				
+			} else {
+				
+				return "redirect:/productList/productDetail?pno="+pno+"#qna-point";
+				//return "fail";
+			}
+			
+			
+		} else { // 새로운 파일이 등록되지 않았다면
 			// 기존 이미지를 그대로 사용
-			vo.setGdsImg(req.getParameter("gdsImg"));
-		vo.setGdsThumbImg(req.getParameter("gdsThumbImg"));
+//			vo.setGdsImg(req.getParameter("gdsImg"));
+//			vo.setGdsThumbImg(req.getParameter("gdsThumbImg"));
+			
+			System.out.println("파일없는쪽으로 왔어!!");
+			/*
+			QnaVO vo = new QnaVO();
+			vo.setB_history(b_history);
+			vo.setUser_id(user_id);
+			vo.setPno(pno);
+			vo.setQ_content(q_content);
+			vo.setQ_title(q_title);
+			vo.setUno(uno);
+			*/
+			System.out.println("파일없는거에서 뭐받나 보자"+vo.toString());
+			QnaBoardService.updateB(vo);
+			RA.addFlashAttribute("msg", "게시물이 정상적으로 수정되었습니다");
+			System.out.println("여기까진왔니?");
+			return "redirect:/productList/productDetail?pno="+pno+"#qna-point";
 		
 		}
 		
-		adminService.goodsModify(vo);
-		
-		return "redirect:/admin/index";
 	}
-	*/
+	
 	//----------------------------------------------------------------------------
 	
 	
 	// 화면삭제 기능
 	@RequestMapping("/qnaDelete")
-	public String qnaDelete(@RequestParam("qna_no") int qna_no, 
-							@RequestParam("pno") int pno,
+	public String qnaDelete(@RequestParam("qna_no") int qna_no,
 							RedirectAttributes RA) {
 
+		QnaVO oldvo = QnaBoardService.getInfo(qna_no);
+		
+		File oldfile=new File(oldvo.getQ_uploadpath()+"\\"+oldvo.getQ_img_name());
+		
+		System.out.println("★★★★★이걸봐:"+oldvo.getQ_uploadpath()+oldvo.getQ_img_name());
+		
+		if( oldfile.exists() ){
+			if(oldfile.delete()){ 
+				System.out.println("파일삭제 성공"); 
+				
+			}else{ System.out.println("파일삭제 실패"); } 
+			
+		}else{ System.out.println("파일이 존재하지 않습니다."); 
+		}
+		
+		QnaVO vo = QnaBoardService.getInfo(qna_no);
+		int pno= vo.getPno();
+		
 		boolean result = QnaBoardService.delete(qna_no);
-
+		
 		if (result) {
 			RA.addFlashAttribute("msg", "게시물이 삭제 되었습니다");
 		} else {
 			RA.addFlashAttribute("msg", "게시물 삭제에 실패했습니다");
 		}
-
 		return "redirect:/productList/productDetail?pno="+pno+"#qna-point";
+		//return "redirect:/qna/qnaList";
 	}
 	
 	@RequestMapping(value="getPno/{qno}/")

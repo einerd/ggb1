@@ -55,7 +55,45 @@
         	padding-top: 80px;
         }
         /* 상품문의 작성 END-------------------------- */
-    
+    	/* qna, review, 고객문의 공통 ----------------------------------*/
+	
+        section {
+            margin-top: 70px;
+        }
+
+        .text-center .btn {
+            float: right; /*우측정렬*/
+            border: 0; /*보더스타일 해제*/
+            border-radius: 0; /*윤곽0*/
+            padding: 5px 10px; /*버튼의 크기를 조정, 페이지네이션에 맞춤*/
+        }
+
+        .titlebox {
+            width: 250px;
+            text-align: center;
+            margin: 70px auto; /*가운데정렬*/
+            height: 40px; /*세로정렬*/
+            line-height: 40px; /*세로정렬*/
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+        }
+
+        
+        
+        .board-title {
+            width: 300px;
+        }
+        
+        .table-bordered > thead > tr > th {
+            background-color: #ccc; /*배경색*/
+            color:#777; /*글씨색*/
+        }
+          
+            .titlefoot{
+            float:right;
+        }
+
+	/* qna, review, 고객문의 공통 END ----------------------------------*/
     </style>
     
 </head>
@@ -116,7 +154,12 @@
                             <td>
 								<div class="category_select">
 									<!-- <select class=" tune" id="category" name="category" style="width: 127px;"><option value="상품">상품</option><option value="배송">배송</option><option value="반품/환불">반품/환불</option><option value="교환/변경">교환/변경</option><option value="기타">기타</option></select> -->
-									<select class="tune" id="b_history" name="b_history" style="width: 127px;"><option value="상품">상품</option><option value="배송">배송</option><option value="반품/환불">반품/환불</option><option value="교환/변경">교환/변경</option><option value="기타">기타</option></select>
+									<select class="tune" id="b_history" name="b_history" style="width: 127px;">
+										<option value="상품">상품</option>
+										<option value="배송">배송</option>
+										<option value="반품/환불">반품/환불</option>
+										<option value="교환/변경">교환/변경</option>
+										<option value="기타">기타</option></select>
 								</div>
 							</td>
                          </tr>

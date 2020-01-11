@@ -52,6 +52,46 @@
         .top {
         	padding-top: 80px;
         }
+        
+        /* qna, review, 고객문의 공통 ----------------------------------*/
+	
+        section {
+            margin-top: 70px;
+        }
+
+        .text-center .btn {
+            float: right; /*우측정렬*/
+            border: 0; /*보더스타일 해제*/
+            border-radius: 0; /*윤곽0*/
+            padding: 5px 10px; /*버튼의 크기를 조정, 페이지네이션에 맞춤*/
+        }
+
+        .titlebox {
+            width: 250px;
+            text-align: center;
+            margin: 70px auto; /*가운데정렬*/
+            height: 40px; /*세로정렬*/
+            line-height: 40px; /*세로정렬*/
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+        }
+
+        
+        
+        .board-title {
+            width: 300px;
+        }
+        
+        .table-bordered > thead > tr > th {
+            background-color: #ccc; /*배경색*/
+            color:#777; /*글씨색*/
+        }
+          
+            .titlefoot{
+            float:right;
+        }
+
+	/* qna, review, 고객문의 공통 END ----------------------------------*/
     </style>
     
 </head>
@@ -71,10 +111,22 @@
                         <tr class="qnaimg">
                              
                               <td class="t-title">
+                              <div class="middle" style="
+	                              <c:if test='${qnaVO.q_fileloca eq null}'>display:none;</c:if>
+	                              <c:if test='${qnaVO.q_fileloca != null}'>display:visible;</c:if>
+                               ">
+                                <!--<img width="500" src="../resources/img/d1.jpg"> -->
+                                <img width="500" src="${pageContext.request.contextPath }/resources/img/qna/${qnaVO.q_fileloca }/${qnaVO.q_img_name}">
+                               
+                      
+                                </div>
+                              	<!-- 
                                <div class="middle">
                                 <img width="150" src="${pageContext.request.contextPath }/${vo.p_uploadpath }/${vo.p_img_names}${vo.p_img_exts}">
                                 </div>
+                                 -->
                               </td>
+                              <!-- 
                               <td>
                                 <div class="middle">
                                  <div class="info">
@@ -85,6 +137,7 @@
                                   </div>
                                   </div>
                               </td>
+                               -->
                           </tr>
                         </tbody>
                     </table>
@@ -105,6 +158,11 @@
                     <input type="hidden" class="form-control" name="sno" id="sno">
                     <input type="hidden" class="form-control" name="uno" id="uno" value="${sessionScope.uno }">
                     <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
+                    <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
+                    <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
+                    <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
+                    <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
+                    
                     
                     <table class="table">
                         <tbody class="t-control">
@@ -166,7 +224,7 @@
 	    	$.getJSON(
 	  	  			"../qna/getPno/"+qno+"/", // 요청보낼 주소
 	  	  			function(data) { // 성공시 전달받을 익명함수
-	  	  				location.href="../productList/productDetail?pno="+data.pno;
+	  	  				location.href="../productList/productDetail?pno="+data.pno+"#qna-point";
 	  	  			}
 	  	  	    )
 	    }

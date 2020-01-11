@@ -1,5 +1,6 @@
 package com.dobby.free.review.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,15 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	//목록불러오기
 	@Override
-	public ArrayList<ReviewVO> getList(Criteria cri, int pno) {
+	public ArrayList<ReviewVO> getList(Criteria cri, int pno, Timestamp startDate, Timestamp endDate) {
 		
-		return reviewMapper.getList(cri, pno);
+		return reviewMapper.getList(cri, pno, startDate, endDate);
 	}
 	
 	@Override
-	public int getTotal() {
+	public int getTotal(Timestamp startDate, Timestamp endDate, int pno) {
 		
-		return reviewMapper.getTotal();
+		return reviewMapper.getTotal(startDate, endDate, pno);
 	}
 
 

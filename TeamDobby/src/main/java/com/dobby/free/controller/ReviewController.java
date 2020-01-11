@@ -52,22 +52,22 @@ public class ReviewController {
 	}//reviewWrite END
 	
 	
-	//목록화면
-	@RequestMapping(value = "/reviewList", method=RequestMethod.GET)
-	public String reviewList(Model model, Criteria cri,
-							 @RequestParam("pno") int pno,
-							 RedirectAttributes RA) {
-		
-		ArrayList<ReviewVO> list = reviewService.getList(cri, pno);
-		int total = reviewService.getTotal();
-		PageVO pageVO = new PageVO(cri, total);
-		
-		RA.addFlashAttribute("pageVO", pageVO); //페이지 정보
-		RA.addFlashAttribute("review", list); //게시글 정보
-		
-		return "redirect:/productList/productDetail?pno="+pno+"#review-point";
-		
-	}//reviewList END
+//	//목록화면
+//	@RequestMapping(value = "/reviewList", method=RequestMethod.GET)
+//	public String reviewList(Model model, Criteria cri,
+//							 @RequestParam("pno") int pno,
+//							 RedirectAttributes RA) {
+//		
+//		ArrayList<ReviewVO> list = reviewService.getList(cri, pno);
+//		int total = reviewService.getTotal();
+//		PageVO pageVO = new PageVO(cri, total);
+//		
+//		RA.addFlashAttribute("pageVO", pageVO); //페이지 정보
+//		RA.addFlashAttribute("review", list); //게시글 정보
+//		
+//		return "redirect:/productList/productDetail?pno="+pno+"#review-point";
+//		
+//	}//reviewList END
 	
 	
 	

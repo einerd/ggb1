@@ -41,23 +41,25 @@ public class QnaVO {
 	}
 
 	
-	public QnaVO(int qna_no, int pno, int uno, String q_title, String q_content, Timestamp regdate) {
+	public QnaVO(int qna_no, int pno, int uno, String b_history, String q_title, String q_content, Timestamp regdate) {
 		super();
 		this.qna_no = qna_no;
 		this.pno = pno;
 		this.uno = uno;
+		this.b_history = b_history;
 		this.q_title = q_title;
 		this.q_content = q_content;
 		this.regdate = regdate;
 	}
 	
 	
-	public QnaVO(int qna_no, int pno, int uno, String q_title, String q_content,
+	public QnaVO(int qna_no, int pno, int uno, String b_history, String q_title, String q_content,
 			String q_img_name, String q_img_ext, String q_uploadpath, String q_fileloca, Timestamp regdate) {
 		super();
 		this.qna_no = qna_no;
 		this.pno = pno;
 		this.uno = uno;
+		this.b_history = b_history;
 		this.q_title = q_title;
 		this.q_content = q_content;
 		this.q_img_name = q_img_name;

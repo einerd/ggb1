@@ -15,6 +15,12 @@
     <link href="${pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath }/resources/js/bootstrap.js"></script>
     
+    <!-- 달력 관련 시작 -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
+    <!-- 달력 관련 END -->
     
     <style type="text/css">
         /*Detail section 화면 설정 START------------------------*/
@@ -422,7 +428,7 @@
                     </ul>
                     <!--내용물-->
                     <h3>배송/교환/반품 안내</h3>
-                    <div class="container-fruid">
+                    <div class="container">
                         <div class="row">
                             <div class="col-xs-12">
                                 <!--delivery-return-table START-->
@@ -623,6 +629,10 @@
 		var msg = "${msg}";
 		if(msg != "") {
 			alert(msg);
+			history.replaceState('', null, null); //현재 히스토리 기록을 변경
+		}
+		if(history.state == '') {
+			return;
 		}
 	})
 	
