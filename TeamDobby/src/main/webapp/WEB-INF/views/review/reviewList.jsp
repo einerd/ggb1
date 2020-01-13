@@ -171,6 +171,10 @@
             text-align: center;
         }
         
+        .reviewlist .starR {
+        	width: 24px;
+        }
+        
         .reviewlist.table>tbody>tr>td{
             vertical-align: middle;
         }
@@ -181,7 +185,7 @@
         .reviewlist th,
         .reviewlist td {
         	text-align: center;
-        	
+        	width:25%;
         }
         
         
@@ -199,6 +203,10 @@
 			.reviewlist td,
 			.reviewlist th{
 				text-align: center;
+			}
+			
+			.reviewlist .starR {
+				width: 22px;
 			}
 		}
         

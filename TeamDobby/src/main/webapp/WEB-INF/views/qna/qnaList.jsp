@@ -139,6 +139,13 @@
         	border-color: #eeeeee;
         }
         
+        .qnalist th,
+        .qnalist td {
+           text-align: center;
+           
+        }
+       
+        
         
         /*-------------------------------------*/
         /*-------------------------------------*/
@@ -240,7 +247,7 @@
 	                  <!-- ==============================-->
 	                  
 	                     
-	                    <table class="table table-bordered">
+	                    <table class="table table-bordered qnalist">
 	                    
 	                        <thead>
 	                            <tr>
