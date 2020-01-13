@@ -136,9 +136,13 @@ public class ListController {
 		}
 		HashMap<String,String> map = new HashMap<String, String>();
 		map.put("key", "p_history");
+		cri.setAmount(5);
 		int uno = (int)request.getSession().getAttribute("uno");
-		model.addAttribute("total", listService.getCount(map, cri));
-		model.addAttribute("list", listService.getMyHistoryList(uno));
+		int total = listService.getCount(map, cri);
+		model.addAttribute("total", total);
+		PageVO vo = new PageVO(cri, total);
+		model.addAttribute("pageVO", vo);
+		model.addAttribute("list", listService.getMyHistoryList(uno, cri));
 		return "productList/purchaseHistory";
 	}
 	

@@ -9,6 +9,7 @@ import com.dobby.free.command.QnaVO;
 import com.dobby.free.command.ReviewVO;
 import com.dobby.free.command.UserVO;
 import com.dobby.free.user.mapper.UserMapper;
+import com.dobby.free.util.Criteria;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -42,15 +43,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ArrayList<QnaVO> getUserQnaList(int uno) {
+	public ArrayList<QnaVO> getUserQnaList(int uno, Criteria cri) {
 		// TODO Auto-generated method stub
-		return userMapper.getUserQnaList(uno);
+		return userMapper.getUserQnaList(uno, cri);
 	}
 
 	@Override
-	public ArrayList<ReviewVO> getUserReviewList(int uno) {
+	public ArrayList<ReviewVO> getUserReviewList(int uno, Criteria cri) {
 		// TODO Auto-generated method stub
-		return userMapper.getUserReviewList(uno);
+		return userMapper.getUserReviewList(uno, cri);
+	}
+
+	@Override
+	public int getTotalReview(int uno) {
+		// TODO Auto-generated method stub
+		return userMapper.getTotalReview(uno);
+	}
+
+	@Override
+	public int getTotalQna(int uno) {
+		// TODO Auto-generated method stub
+		return userMapper.getTotalQna(uno);
 	}
 
 	

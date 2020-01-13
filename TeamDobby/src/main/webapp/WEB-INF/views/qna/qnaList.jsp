@@ -2,10 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
+    
     <style type="text/css">
         
-        
         /* 날짜(캘린더) 솔팅 */
+        
         .qnalist-wrap{
             margin: 0 auto;
             float: none;
@@ -40,50 +41,49 @@
         
         /* 1:1 문의 조회기간 영역 */
         .date_check_box{
-		margin:0 0 10px 0;
-		padding:10px 20px 10px 30px;
-		border:3px solid #eeeeee;
-	}
+			margin:0 0 10px 0;
+			padding:10px 20px 10px 30px;
+			border:3px solid #eeeeee;
+		}
         .date_check_box:after{
-		display:block; 
-		clear:both; 
-		content:"";
-	}
+			display:block; 
+			clear:both; 
+			content:"";
+		}
         .date_check_box h3{
-		float:left;
-		padding:0px 15px 0 0; 
-		color:#777777; 
-		font-size:13px;
-	}
+			float:left;
+			padding:0px 15px 0 0; 
+			color:#777777; 
+			font-size:13px;
+		}
         .date_check_list{
-		float:left;
-	}
+			float:left;
+		}
         .date_check_list button{
-		float:left;
-		width:54px; 
-		height:31px; 
-		margin:0 0 0 -1px; 
-		color:#777777; 
-		font-size:12px; 
-		border:1px solid #d6d6d6;
-	}
+			float:left;
+			width:54px; 
+			height:31px; 
+			margin:0 0 0 -1px; 
+			color:#777777; 
+			font-size:12px; 
+			border:1px solid #d6d6d6;
+		}
         .date_check_list button:hover,
         .date_check_list button.on{
-		color:#ffffff; 
-		background:#aeaeae;
-	}
+			color:#ffffff; 
+			background:#aeaeae;
+		}
         .date_check_calendar{
-		position:relative; 
-		float:left; 
-		margin:0 10px 0 10px;
-	}
+			position:relative; 
+			float:left; 
+			margin:0 10px 0 10px;
+		}
         .date_check_calendar .anniversary{
-		background:url('../img/icon_calendar.png') no-repeat right center;
-        }
+			background:url('../img/icon_calendar.png') no-repeat right center;
+	    }
         
         .date_check_box .date_check_list{
             padding:11px 0px 10px;
-            
         }
         
         .date_check_box .anniversary{
@@ -108,7 +108,16 @@
         }
         
         /* 1:1 문의 조회버튼 */
-        .btn_date_check{display:inline-block; float: right; min-width:70px; height:31px; color:#ffffff; font-weight:bold; border:1px solid #5bc0de; background:#5bc0de; text-align:center;}
+        .btn_date_check {
+	        display:inline-block; 
+	        float: right; 
+	        min-width:70px; height:31px; 
+	        color:#ffffff; 
+	        font-weight:bold; 
+	        border:1px solid #5bc0de; 
+	        background:#5bc0de; 
+	        text-align:center;
+        }
         .btn_date_check em{
             background-image:url("../../img/common/btn/btn_goods_search.png");
             background-position:right 3px;
@@ -145,9 +154,7 @@
         /*-------------------------------------*/
         
     </style>
-	 
-      
-	    <section class="top">
+	 <section class="top">
 	        <div class="container">
 	            <div class="row middle">
 	                <div class="col-xs-12 col-lg-9 board-table qnalist-wrap">
@@ -208,17 +215,18 @@
 						<!-- //date_check_list -->
 						<div class="date_check_calendar" style="padding-top: 14px;">
 	                        <input type="text" id="datepicker1" name="datepicker1">
-	                        <span class="glyphicon glyphicon-calendar"></span></div> 
+	                        <span class="glyphicon glyphicon-calendar"></span>
+	                    </div> 
 	                        <div class="date_check_calendar ">
 	                        <p>~</p>
 	                        </div>
-	                       <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
+	                        <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
+							</form>
 						</div>
 						<!-- //date_check_calendar -->
 	
 						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
-				</div>
-					</form>
+				
 				<!-- 검색 클릭시 pageNum을 1부터 시작하게 처리 -->
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" name="amount" value="${pageVO.cri.amount }">
@@ -260,25 +268,30 @@
 	                        </c:if>
 	                        <!-- 1.pageNum처리 -->
 	                        <c:forEach var="num" begin="${pageVO2.startPage }" end="${pageVO2.endPage }">
-	                        	<li  class="${pageVO2.pageNum == num ? 'active': '' }"><a href="../productList/productDetail?pageNum=${num }&pno=${vo.pno}&path=qna#qna-point"">${num }</a></li>
+	                        	<li  class="${pageVO2.pageNum == num ? 'active': '' }"><a href="../productList/productDetail?pageNum=${num }&pno=${vo.pno}&path=qna#qna-point">${num }</a></li>
 	                        </c:forEach>
 	                        <!-- 2.다음버튼 활성화여부 -->
 	                        <c:if test="${pageVO2.next }">
-	                        	<li><a href="../productList/productDetail?pageNum=${pageVO2.endPage+1 }&pno=${vo.pno}&path=qna#qna-point"">다음</a></li>
+	                        	<li><a href="../productList/productDetail?pageNum=${pageVO2.endPage+1 }&pno=${vo.pno}&path=qna#qna-point">다음</a></li>
 	                        </c:if>
 	                        </ul>
 	                        <button class="btn btn-info" id="qnaRegist">등록</button>
 	                    </div>
-	                    
 	                </div>
 	            </div>
-	        </div>       
-	        
 	    </section>
 	    
 	    
 	    <script>
 	    window.onload = function() {
+	    	
+	    	if(history.state == '') return;
+	    		
+	    	var msg = '${msg}';
+	    	if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+	    		alert(msg);
+	    		history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+	    	}
 			
 		    $(function(){
 		        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });

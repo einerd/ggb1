@@ -116,8 +116,12 @@
         .purchaseDATE {
         	font-size: 20px;
         }
-        /*------------------------------------------------구매내역 리스트 끝--------*/
+        /* 페이지네이션 중앙정렬 */
+        .paging {
+            text-align: center;
         }
+        /*------------------------------------------------구매내역 리스트 끝--------*/
+        
         
     </style>
 </head>
@@ -174,13 +178,35 @@
                </c:forEach>
            </div>
     </section>
+    <section class="paging">
+                        <ul class="pagination pagination-sm">
+                          <!--이전 button  --> 
+                          <c:if test = "${pageVO.prev }" >
+                          	<li><a href="../productList/purchaseHistory?pageNum=${pageVO.startPage-1 }">${num }">이전</a></li>
+                          </c:if>
+                          
+                          <!-- pageNum -->
+                          <c:forEach var="num" begin="${pageVO.startPage }" end="${pageVO.endPage }">
+                          	<li class="${pageVO.pageNum == num ? 'active' : '' }"><a href="../productList/purchaseHistory?pageNum=${num }">${num }</a></li>
+                          </c:forEach>
+                          
+                          <!-- 다음 button -->
+                          <c:if test = "${pageVO.next }">
+                          	<li><a href="../productList/purchaseHistory?pageNum=${pageVO.endPage+1 }">${num }">다음</a></li>
+                          </c:if>
+                        </ul>
+                    </section>
     
 <%@ include file="../include/footer.jsp" %>
 <script>
 	$(document).ready(function() {
-		var msg = "${msg}";
-		if(msg != "") {
+		// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+		if(history.state == '') return;
+		
+		var msg = '${msg}';
+		if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
 			alert(msg);
+			history.replaceState('', null, null); // 현재 히스토리 기록을 변경
 		}
 	})
 	

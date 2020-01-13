@@ -163,9 +163,7 @@
                         </tbody>
                     </table>
                      
-                    <input type="hidden" name="pno" id="pno" value="999">
-                    <input type="hidden"  name="sno" id="sno" value="888">
-                    
+                    <input type="hidden" name="uno" value="${sessionScope.uno }">
                     <input type="hidden"  class="form-control"id="qna_no" name="qna_no" value="${qnaVO.qna_no }">
                     
                     <table class="table">
@@ -189,7 +187,7 @@
                          </tr>
                           <tr>
                             <td class="t-title">UserId</td>
-                            <td><input type="text" class="form-control" name="uno" id="uno" value="${qnaVO.uno }" readonly></td> <!-- value="${sessionScope.user_id}" readonly -->
+                            <td><input type="text" class="form-control" name="user_id" id="uno" value="${sessionScope.user_id }" readonly></td> <!-- value="${sessionScope.user_id}" readonly -->
                           </tr>
                           <tr>
                             <td class="t-title">REGDATE</td>

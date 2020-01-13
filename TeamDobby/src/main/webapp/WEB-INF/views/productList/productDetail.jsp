@@ -350,8 +350,8 @@
                     </div>
                     <div class="control">
                         <div class="price">
-                            <dt class="left">상품금액</dt>
-                            <dd class="right"><strong><span class="finalPrice">${vo.p_price }</span>원</strong></dd>
+                            <div class="left">상품금액</div>
+                            <div class="right"><strong><span class="finalPrice">${vo.p_price }</span>원</strong></div>
                         </div>
                         <div class="order">
                             <button value="basket" class="left btn btn-default">장바구니</button>
@@ -626,14 +626,15 @@
 <script>
 
 	$(document).ready(function() {
-		var msg = "${msg}";
-		if(msg != "") {
+		// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+		if(history.state == '') return;
+		
+		var msg = '${msg}';
+		if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
 			alert(msg);
-			history.replaceState('', null, null); //현재 히스토리 기록을 변경
+			history.replaceState('', null, null); // 현재 히스토리 기록을 변경
 		}
-		if(history.state == '') {
-			return;
-		}
+		
 	})
 	
 	var pno = location.search;

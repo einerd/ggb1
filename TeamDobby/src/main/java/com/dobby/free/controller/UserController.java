@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +19,8 @@ import com.dobby.free.command.QnaVO;
 import com.dobby.free.command.ReviewVO;
 import com.dobby.free.command.UserVO;
 import com.dobby.free.user.service.UserService;
+import com.dobby.free.util.Criteria;
+import com.dobby.free.util.PageVO;
 
 @Controller
 @RequestMapping(value="/user")
@@ -55,18 +58,37 @@ public class UserController {
 	
 	//마이페이지화면(페이지 진입시, 조인을 통해서, user에 대한정보와, user가 쓴글에 대한 정보를 동시에 처리)
 	@RequestMapping(value="/userMypage")
-	public String userMypage(HttpSession session, Model model,
-							 RedirectAttributes RA) {
-		
+	public String userMypage(@RequestParam(value="path", required=false) String path,
+							 HttpSession session, Model model,
+							 Criteria cri, RedirectAttributes RA) {
+		if(path == null) path = "";
 		String user_id = (String)session.getAttribute("user_id");
 		if(user_id == null) {
 			RA.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 			return "redirect:/";
 		}
 		int uno = (int)session.getAttribute("uno");
-		UserVO userVO = userService.getInfo(user_id); //join의 결과를 resultMap으로 한번에 묶어서 처리
-		ArrayList<QnaVO> qnaList = userService.getUserQnaList(uno);
-		ArrayList<ReviewVO> reviewList = userService.getUserReviewList(uno);
+		UserVO userVO = userService.getInfo(user_id);
+		int total1 = userService.getTotalReview(uno);
+		int total2 = userService.getTotalQna(uno);
+		PageVO pageVO1 = new PageVO(cri, total1);
+		PageVO pageVO2 = new PageVO(cri, total2);
+		
+		ArrayList<QnaVO> qnaList = userService.getUserQnaList(uno, cri);
+		ArrayList<ReviewVO> reviewList = userService.getUserReviewList(uno, cri);
+		
+		if(path.equals("review")) {
+			pageVO1 = new PageVO(cri, total1);
+			pageVO2.setPageNum(1);
+			qnaList = userService.getUserQnaList(uno, new Criteria());
+		}else if(path.equals("qna")) {
+			pageVO1.setPageNum(1);
+			pageVO2 = new PageVO(cri, total2);
+			reviewList = userService.getUserReviewList(uno, new Criteria());
+		}
+		
+		model.addAttribute("pageVO1", pageVO1);
+		model.addAttribute("pageVO2", pageVO2);
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("userVO", userVO);

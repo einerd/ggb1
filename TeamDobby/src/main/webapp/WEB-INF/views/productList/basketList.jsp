@@ -427,6 +427,14 @@
 			$(".right-outer").css("display", "none");
 		}
 		
+		if(history.state == '') return;
+		
+		var msg = '${msg}';
+		if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+			alert(msg);
+			history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+		}
+		
 	})
 	// 마이너스 버튼 클릭
 	$(".productINFO-TAB").on("click", ".btn-warning", function(event) {

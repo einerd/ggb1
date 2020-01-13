@@ -158,13 +158,22 @@
 	
 	<!-- 주문내역 긁어오기 -->
 	<select id="getMyHistoryList" resultType="com.dobby.free.command.ProductDetailVO">
-		select dp.pno, dp.p_item, dp.p_name, dp.p_price, dp.p_quantity, do.p_b_quantity, dp.p_detail, 
+		select * from (
+        select pno, rownum as rn, p_item, p_name, p_price, p_quantity, p_b_quantity, p_detail, 
+			p_manufac, p_img_names, p_img_exts, p_uploadpath, p_fileloca, p_option_1,
+			p_option_2, p_regdate, sno, seller_name,
+			seller_nick, s_phone_1, s_phone_2, s_address_1, s_address_2,
+			s_post_no, s_email_1, s_email_2,business_no
+        from (select dp.pno, dp.p_item, dp.p_name, dp.p_price, dp.p_quantity, do.p_b_quantity, dp.p_detail, 
 			dp.p_manufac, dp.p_img_names, dp.p_img_exts, dp.p_uploadpath, dp.p_fileloca, dp.p_option_1,
 			dp.p_option_2, do.b_date as p_regdate, dp.sno, dp.seller_name,
 			dp.seller_nick, dp.s_phone_1, dp.s_phone_2, dp.s_address_1, dp.s_address_2,
 			dp.s_post_no, dp.s_email_1, dp.s_email_2,dp.business_no
-        from d_product_detail dp inner join d_ordered do on dp.pno = do.pno 
-        where do.uno = #{uno} order by do.b_date desc
+        from d_product_detail dp inner join d_ordered do on dp.pno = do.pno
+        where do.uno = 1 order by p_regdate desc)) 
+        <![CDATA[
+        where rn > (#{cri.pageNum}-1) * #{cri.amount} and rn <= #{cri.pageNum} * #{cri.amount}
+        ]]>
 	</select>
 	
 	<!-- 이전에 사용한 주소 긁어오기 -->

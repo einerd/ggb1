@@ -229,7 +229,7 @@ public class QnaController {
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			String q_fileloca = sdf.format(date);
-			String q_uploadpath = "D:\\jaehyun_spring\\workspace\\SpringTMP\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
+			String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
 			
 			File folder = new File(q_uploadpath);
 			if( !folder.exists()) {

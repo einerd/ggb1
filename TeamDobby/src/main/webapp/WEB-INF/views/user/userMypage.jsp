@@ -82,6 +82,10 @@
         .table {
         	overflow: auto;
         }
+        /* 페이지네이션 중앙정렬 */
+        .paging {
+            text-align: center;
+        }
 		
 		
 	</style>
@@ -97,12 +101,12 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-10 col-lg-9 myInfo">
 					<ul class="nav nav-tabs tabs-style">
-						<li class="active"><a data-toggle="tab" href="#info">내정보</a></li>
-						<li><a data-toggle="tab" href="#myReviewBoard">내 리뷰</a></li>
-						<li><a data-toggle="tab" href="#myQnaBoard">내 질문</a></li>
+						<li class="" id="basic"><a data-toggle="tab" href="#info">내정보</a></li>
+						<li class="" id="review"><a data-toggle="tab" href="#myReviewBoard">내 리뷰</a></li>
+						<li class="" id="qna"><a data-toggle="tab" href="#myQnaBoard">내 질문</a></li>
 					</ul>
 					<div class="tab-content">
-						<div id="info" class="tab-pane fade in active">
+						<div id="info" class="tab-pane fade">
 
 							<p>*표시는 필수 입력 표시입니다</p>
 							<form action="userModify" id="regForm" name="regForm" method="post">
@@ -186,10 +190,6 @@
 									</tbody>
 								</table>
 							</form>
-
-							<div class="titlefoot">
-								<button class="btn btn-success" id="updateBtn">수정</button>
-							</div>
 						</div>
 						
 						
@@ -213,11 +213,26 @@
                                     </tr>
                                     </c:forEach>
                                 </thead>
-                                
-
-                                
                             </table>
                             </form>
+   					<div class="paging">
+                        <ul class="pagination pagination-sm">
+                          <!--이전 button  --> 
+                          <c:if test = "${pageVO1.prev }" >
+                          	<li><a href="../user/userMypage?pageNum=${pageVO1.startPage-1 }&path=review">${num }">이전</a></li>
+                          </c:if>
+                          
+                          <!-- pageNum -->
+                          <c:forEach var="num" begin="${pageVO1.startPage }" end="${pageVO1.endPage }">
+                          	<li class="${pageVO1.pageNum == num ? 'active' : '' }"><a href="../user/userMypage?pageNum=${num }&path=review">${num }</a></li>
+                          </c:forEach>
+                          
+                          <!-- 다음 button -->
+                          <c:if test = "${pageVO1.next }">
+                          	<li><a href="../user/userMypage?pageNum=${pageVO1.endPage+1 }&path=review">${num }">다음</a></li>
+                          </c:if>
+                        </ul>
+                    </div>
                         </div>
 
 						<!-- 두번째 토글 끝 -->
@@ -245,6 +260,24 @@
                                 
                             </table>
                             </form>
+                            <div class="paging">
+                        <ul class="pagination pagination-sm">
+                          <!--이전 button  --> 
+                          <c:if test = "${pageVO2.prev }" >
+                          	<li><a href="../user/userMypage?pageNum=${pageVO2.startPage-1 }&path=qna">${num }">이전</a></li>
+                          </c:if>
+                          
+                          <!-- pageNum -->
+                          <c:forEach var="num" begin="${pageVO2.startPage }" end="${pageVO2.endPage }">
+                          	<li class="${pageVO2.pageNum == num ? 'active' : '' }"><a href="../user/userMypage?pageNum=${num }&path=qna">${num }</a></li>
+                          </c:forEach>
+                          
+                          <!-- 다음 button -->
+                          <c:if test = "${pageVO2.next }">
+                          	<li><a href="../user/userMypage?pageNum=${pageVO2.endPage+1 }&path=qna">${num }">다음</a></li>
+                          </c:if>
+                        </ul>
+                    </div>
                         </div>
 					</div>
 				</div>
@@ -292,6 +325,37 @@
 				document.getElementById("u_address_1").value = roadAddrPart1;
 				document.getElementById("u_address_2").value = addrDetail + roadAddrPart2;
 				document.getElementById("u_post_no").value = zipNo;
+		}
+		
+		window.onload = function() {
+			
+			// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+			if(history.state == '') return;
+				
+			var msg = '${msg}';
+			if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+				alert(msg);
+				history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+			}
+			
+			var path = location.search;
+			path = path.substring(path.lastIndexOf("=")+1);
+			console.log(path);
+			if(path == 'review') {
+				document.getElementById("review").setAttribute("class", "active");
+				document.getElementById("myReviewBoard").setAttribute("class", "tab-pane fade in active");
+				document.getElementById("basic").setAttribute("class", "");
+				document.getElementById("info").setAttribute("class", "tab-pane fade in");
+			}else if(path == 'qna') {
+				document.getElementById("qna").setAttribute("class", "active");
+				document.getElementById("myQnaBoard").setAttribute("class", "tab-pane fade in active");
+				document.getElementById("basic").setAttribute("class", "");
+				document.getElementById("info").setAttribute("class", "tab-pane fade in");
+				
+			}else {
+				document.getElementById("basic").setAttribute("class", "active");
+				document.getElementById("info").setAttribute("class", "tab-pane fade in active");
+			}
 		}
 	</script>
 

@@ -198,12 +198,21 @@
     
     <script>
     
-    	//이미지 모달창
- 
+	window.onload = function() {
+			
+		// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+		if(history.state == '') return;
+		
+		var msg = '${msg}';
+		if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+			alert(msg);
+			history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+		}
+	}
 
       
-	  	//수정화면이동
-	       var reviewList = document.getElementById("reviewModify");
+	   //수정화면이동
+	   var reviewList = document.getElementById("reviewModify");
        reviewModify.onclick = function() {
           var rno = location.search;
             rno = location.search.substring(rno.lastIndexOf("=")+1);

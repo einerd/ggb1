@@ -271,12 +271,13 @@ $(function(){
 	                        <p>~</p>
 	                        </div>
 	                       <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
+						</form>
 						</div>
 						<!-- //date_check_calendar -->
 	
 						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
 				</div>
-					</form>
+					
                   <!-- ==============================-->
                   
                     <table class="table table-bordered reviewlist" >
@@ -338,8 +339,6 @@ $(function(){
                     </div>
                     
                 </div>
-            </div>
-        </div>       
         
     </section>
     
@@ -352,6 +351,16 @@ $(function(){
 	   	}
 	   	
 	    window.onload = function() {
+	    	
+	    	// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+	    	if(history.state == '') return;
+	    	
+	    	var msg = '${msg}';
+	    	if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+	    		alert(msg);
+	    		history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+	    	}
+	    	
 			
 		    $(function(){
 		        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });

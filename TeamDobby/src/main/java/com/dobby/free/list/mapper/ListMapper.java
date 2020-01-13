@@ -42,7 +42,7 @@ public interface ListMapper {
 	public int purchaseSubmit(@Param("vo") ProductDetailVO vo,
 							  @Param("uno") int uno);
 	// 구매내역 리스트 불러오기
-	public ArrayList<ProductDetailVO> getMyHistoryList(int uno);
+	public ArrayList<ProductDetailVO> getMyHistoryList(@Param("uno") int uno, @Param("cri") Criteria cri);
 	// 주소테이블에서 주소 불러오기
 	public AddressVO getLastAddress(int uno);
 	// 결제시 신규주소 입력하였을 때 신규주소 업데이트

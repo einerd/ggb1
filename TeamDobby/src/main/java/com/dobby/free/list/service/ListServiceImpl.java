@@ -85,9 +85,9 @@ public class ListServiceImpl implements ListService {
 	}
 	// 주문테이블에서 구매내역 가져오기
 	@Override
-	public ArrayList<ProductDetailVO> getMyHistoryList(int uno) {
+	public ArrayList<ProductDetailVO> getMyHistoryList(int uno, Criteria cri) {
 		// TODO Auto-generated method stub
-		return listMapper.getMyHistoryList(uno);
+		return listMapper.getMyHistoryList(uno, cri);
 	}
 	// 마지막으로 사용했던 주소 가져오기
 	@Override

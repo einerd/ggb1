@@ -212,6 +212,16 @@
 	    
    		//등록을 클릭하면 작성자, 제목, 내용이 공백인지 확인하고, 공백이라면 함수종료 ,공백이 아니라면 controller전송하는 처리
    		window.onload = function() {
+   			
+   			// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
+   			if(history.state == '') return;
+   			
+   			var msg = '${msg}';
+   			if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
+   				alert(msg);
+   				history.replaceState('', null, null); // 현재 히스토리 기록을 변경
+   			}
+   			
    			var qnaRegist = document.getElementById("qnaRegist");
    	    	qnaRegist.onclick = function() {
    	    		

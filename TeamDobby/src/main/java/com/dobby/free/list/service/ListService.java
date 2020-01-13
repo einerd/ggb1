@@ -33,7 +33,7 @@ public interface ListService {
 	// 결제완료시 구매내역 테이블 업데이트
 	public int purchaseSubmit(ProductDetailVO vo, int uno);
 	// 구매내역 불러오기
-	public ArrayList<ProductDetailVO> getMyHistoryList(int uno);
+	public ArrayList<ProductDetailVO> getMyHistoryList(int uno, Criteria cri);
 	// 이전주소 불러오기 (주소 테이블)
 	public AddressVO getLastAddress(int uno);
 	// 신규주소 입력 시 이전주소 덮어쓰기
