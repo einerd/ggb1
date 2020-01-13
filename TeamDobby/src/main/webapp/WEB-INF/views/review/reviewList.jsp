@@ -178,33 +178,36 @@
         	padding-top: 80px; 
         } 
         
+        .reviewlist th,
+        .reviewlist td {
+        	text-align: center;
+        	
+        }
+        
+        
+        @media (max-width:767px) {
+			.reviewlist .starRevth,
+			.reviewlist .date-title  {
+			    width: 30%;
+			}
+
+			.reviewlist .board-title,
+			.reviewlist .user-title {
+				width: 20%;
+			}
+			
+			.reviewlist td,
+			.reviewlist th{
+				text-align: center;
+			}
+		}
+        
         
         /*review_list 별 END-------------------*/
     </style>
     
      
-<script type='text/javascript'>
-$(function(){
-    $('.input-group.date').datepicker({
-        calendarWeeks: false,
-        todayHighlight: true,
-        autoclose: true,
-        format: "yyyy/mm/dd",
-        language: "kr"
-    });
 
-});
-
-;(function($){
-    $.fn.datepicker.dates['kr'] = {
-        days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
-        daysShort: ["일", "월", "화", "수", "목", "금", "토", "일"],
-        daysMin: ["일", "월", "화", "수", "목", "금", "토", "일"],
-        months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-        monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-    };
-}(jQuery));
-</script>
 
     <section class="top">
         <div class="container">
@@ -213,69 +216,7 @@ $(function(){
                     <div class="titlebox" id="titletitle">
                         <p>상품후기</p>                        
                     </div>
-                    
-                 <!-- ==============================-->
-				<form id="dateSearchForm" name="dateSearchForm" method="post" action="productDetail?pno=${vo.pno }#review-point">
-	                  <div class="date_check_box">
-				
-						<input type="hidden" name="pno" id="pno" value="${vo.pno }">
-					 	<input type="hidden" id="startDate" name="startDate" value="">
-						<input type="hidden" id="endDate" name="endDate" value="">
-					
-						<h3 style="padding-top:10px;"> 조회기간 </h3>
-						<div class="date_check_list" data-target-name="rangDate[]">
-						
-                    
-                        <ul class="searchDate">
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType1" onclick="setSearchDate('0d')"/>
-                                    <label for="dateType1">당일</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType3" onclick="setSearchDate('1w')"/>
-                                    <label for="dateType3">1주</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType5" onclick="setSearchDate('1m')"/>
-                                    <label for="dateType5">1개월</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType6" onclick="setSearchDate('3m')"/>
-                                    <label for="dateType6">3개월</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType7" onclick="setSearchDate('6m')"/>
-                                    <label for="dateType7">6개월</label>
-                                </span>
-                            </li>
-                        </ul>
-                        
-                   
-                
-						</div>
-						
-						<!-- //date_check_list -->
-						<div class="date_check_calendar" style="padding-top: 14px;">
-	                        <input type="text" id="datepicker1" name="datepicker1">
-	                        <span class="glyphicon glyphicon-calendar"></span></div> 
-	                        <div class="date_check_calendar ">
-	                        <p>~</p>
-	                        </div>
-	                       <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
-						</form>
-						</div>
-						<!-- //date_check_calendar -->
-	
-						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
+				</div>
 				</div>
 					
                   <!-- ==============================-->
@@ -285,8 +226,8 @@ $(function(){
                             <tr>
                                 <th class="starRevth">평점</th>
                                 <th class="board-title">제목</th>
-                                <th>작성자</th>
-                                <th>등록일</th>
+                                <th class="user-title">작성자</th>
+                                <th class="date-title">등록일</th>
                             </tr>
                         </thead>
                         <c:forEach var="vo" items="${review }">
@@ -350,148 +291,7 @@ $(function(){
 		   location.href="../review/reviewWrite?pno=${vo.pno }";
 	   	}
 	   	
-	    window.onload = function() {
-	    	
-	    	// 뒤로가기 실행후에 앞으로가기 했을 때, 저장된 기록이 공백이라면 함수 종료
-	    	if(history.state == '') return;
-	    	
-	    	var msg = '${msg}';
-	    	if(msg != '') { // 값이 없을 때는 ''로 감싸서 공백문자열로 완성되도록 해준다
-	    		alert(msg);
-	    		history.replaceState('', null, null); // 현재 히스토리 기록을 변경
-	    	}
-	    	
-			
-		    $(function(){
-		        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
-		        $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd' }).bind("change",function(){
-		            var minValue = $(this).val();
-		            minValue = $.datepicker.parseDate("yy-mm-dd", minValue);
-		            minValue.setDate(minValue.getDate()+1);
-		            $("#datepicker2").datepicker( "option", "minDate", minValue );
-		        })
-		});
-		    
-		    
-		    
-			var calsearch = document.getElementById("calsearch");
-		    calsearch.onclick = function() {
-		    			var pno = location.search;
-		    	    	pno = pno.substring(pno.lastIndexOf("=")+1);
-		    	    	
-		    	    	$("#pno").val(pno);
-		    	    	console.log(pno);
-		    	    	console.log($("#pno").val());
-		    	   
-		    	    	//alert(document.getElementById("datepicker1").value);
-		    	    	//alert(document.getElementById("datepicker2").value);
-		    	    	
-		    	    	document.getElementById("startDate").setAttribute("value", document.getElementById("datepicker1").value+" 00:00:00");
-		    	    	document.getElementById("endDate").setAttribute("value", document.getElementById("datepicker2").value+" 23:59:59");
-		    	    	
-		    	    	
-		    	    	//alert(document.getElementById("startDate").value);
-		    	    	//alert(document.getElementById("endDate").value);
-		    	    	
-// 		    	    	document.getElementById("startDate").setDate((document.getElementById("startDate").value).getDate()+1)
-// 		    	    	document.getElementById("endDate").setDate((document.getElementById("endDate").value).getDate()+1)
-		    	    	
-		    	    	
-		    	    	//alert(document.getElementById("startDate").value);
-		    	    	//alert(document.getElementById("endDate").value);
-		    	    	console.log(document.getElementById("datepicker1").value);
-		    	    	console.log(document.getElementById("datepicker2").value);
-		    	    	//$("datepicker3").value("datepicker1".value());
-		    	    	//$("datepicker4").value("datepicker2".value());
-		    	    	console.log(document.getElementById("startDate").value)
-		    	    	console.log(document.getElementById("endDate").value)
-		     	    	$("#dateSearchForm").submit();
-
-		    		}
-		    	}
-			
-			//localhost:8181/test/productList/productDetailB?pno=27&startDate=2020-01-01 00:00:00&endDate=2020-01-08 00:00:00
-		
-					
-		 function setSearchDate(start){
-
-				var num = start.substring(0,1);
-				var str = start.substring(1,2);
-
-				var today = new Date();
-
-				//var year = today.getFullYear();
-				//var month = today.getMonth() + 1;
-				//var day = today.getDate();
-				
-				var endDate = $.datepicker.formatDate('yy-mm-dd', today);
-				$('#datepicker2').val(endDate);
-				
-				if(str == 'd'){
-					today.setDate(today.getDate() - num);
-				}else if (str == 'w'){
-					today.setDate(today.getDate() - (num*7));
-				}else if (str == 'm'){
-					today.setMonth(today.getMonth() - num);
-					today.setDate(today.getDate() + 1);
-				}
-
-				var startDate = $.datepicker.formatDate('yy-mm-dd', today);
-				$('#datepicker1').val(startDate);
-						
-				// 종료일은 시작일 이전 날짜 선택하지 못하도록 비활성화
-				$("#datepicker2").datepicker( "option", "minDate", startDate );
-				
-				// 시작일은 종료일 이후 날짜 선택하지 못하도록 비활성화
-				$("#datepicker1").datepicker( "option", "maxDate", endDate );
-
-			}
-	    
-	    
-	    var qnaRegist = document.getElementById("qnaRegist");
-	    qnaRegist.onclick = function() {
-	    	location.href = "../qna/qnaRegist?pno=${vo.pno }";
-	    }
-	    
-	    
-	    
-	    $(function() {
-	        $("#datepicker1, #datepicker2").datepicker({
-	            dateFormat: 'yy-mm-dd',
-	            	autoclose : true,
-	            	todayHighlight : true ,
-	            	toggleActive : true,
-	            	weekStart : 0 ,
-	            	changeMonth: true,
-	                changeYear: true,
-	            	language : "ko"
-	            	
-	        });
-
-	        $('#datepicker1').datepicker();
-	        $('#datepicker1').datepicker("option", "maxDate", $("#datepicker2").val());
-	        $('#datepicker1').datepicker("option", "onClose", function ( selectedDate ) {
-	            $("#datepicker2").datepicker( "option", "minDate", selectedDate );
-	        });
-	     
-	        $('#datepicker2').datepicker();
-	        $('#datepicker2').datepicker("option", "minDate", $("#datepicker1").val());
-	        $('#datepicker2').datepicker("option", "onClose", function ( selectedDate ) {
-	            $("#datepicker1").datepicker( "option", "maxDate", selectedDate );
-	        });
-	        
-	    });
 	   
-	    
-	    $.datepicker.setDefaults({
-	        showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-	    });
-	    
-	    
-	    $('#datepicker2').setDefaults({
-	       maxDate: "0" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)    
-	    });
-	    
 	    
 	    </script>
     

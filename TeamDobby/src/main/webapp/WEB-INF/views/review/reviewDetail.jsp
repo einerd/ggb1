@@ -77,7 +77,10 @@
 		        text-align: left;
 		        vertical-align: middle;
 		}
-
+		
+		.titlefoot{
+            float:right;
+        }
 		
     </style>
 </head>

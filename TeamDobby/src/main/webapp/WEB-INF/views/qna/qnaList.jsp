@@ -213,19 +213,26 @@
 						</div>
 						
 						<!-- //date_check_list -->
+						<div>
+						<div>
 						<div class="date_check_calendar" style="padding-top: 14px;">
 	                        <input type="text" id="datepicker1" name="datepicker1">
 	                        <span class="glyphicon glyphicon-calendar"></span>
 	                    </div> 
 	                        <div class="date_check_calendar ">
-	                        <p>~</p>
+	                        <p style="padding-bottom:4px;">~</p>
 	                        </div>
-	                        <input style="padding-top:10px;" type="text" id="datepicker2" name="datepicker2"><span style="padding-top:10px;" class="glyphicon glyphicon-calendar"></span></div> 
+	                        <div class="date_check_calendar" style="padding-top: 14px;">
+	                        <input type="text" id="datepicker2" name="datepicker2"><span class="glyphicon glyphicon-calendar"></span>
+	                    </div>
+	                        </div> 
+						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
+						</div>		
+						</div>
 							</form>
 						</div>
 						<!-- //date_check_calendar -->
 	
-						<button class="btn_date_check" id="calsearch" type="button"><em>조회</em></button>
 				
 				<!-- 검색 클릭시 pageNum을 1부터 시작하게 처리 -->
 				<input type="hidden" name="pageNum" value="1">
@@ -292,6 +299,7 @@
 	    		alert(msg);
 	    		history.replaceState('', null, null); // 현재 히스토리 기록을 변경
 	    	}
+	    	
 			
 		    $(function(){
 		        $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });

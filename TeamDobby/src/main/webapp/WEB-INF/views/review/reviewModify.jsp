@@ -52,6 +52,10 @@
         .top {
         	padding-top: 80px;
         }
+        
+        .titlefoot{
+            float:right;
+        }
         /* rewview_write END ----------------------*/
     
     </style>
@@ -173,7 +177,7 @@
 				history.replaceState('', null, null); // 현재 히스토리 기록을 변경
 			}
 		}
-    
+    	
     
   		//별 움직임
 		$('.starRev span').click(function(e){

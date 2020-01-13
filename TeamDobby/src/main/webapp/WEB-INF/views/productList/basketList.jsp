@@ -302,7 +302,6 @@
                             <br>
                             <b>결제건수:&nbsp;&nbsp;<span class="totalCNT"></span>&nbsp;건</b><br>
                             <b>상품금액:&nbsp;&nbsp;<span class="totalPRICE"></span>&nbsp;원</b><br>
-                            <b>할인:&nbsp;&nbsp;-&nbsp;<span class="transferFEE">2500</span>&nbsp;원</b>
                         </div>
                         <div class="B-inner-right">
                             <button type="button" class="btn btn-primary">결제하기</button>
@@ -334,7 +333,6 @@
                             <hr>
                             <h4><b>결제건수:&nbsp;&nbsp;<span class="totalCNT"></span>&nbsp;건</b></h4>
                             <h4><b>상품금액:&nbsp;&nbsp;<span class="totalPRICE"></span>&nbsp;원</b></h4>
-                            <h4><b>할인:&nbsp;&nbsp;-&nbsp;<span class="transferFEE">2500</span>&nbsp;원</b></h4>
                             <hr>
                             <div class="TABTAB">
                                 <div class="finalPRICETAG">
@@ -417,11 +415,11 @@
 			totalPRICE += parseInt(list1[i].innerHTML);
 		}
 		$(".totalPRICE").html(totalPRICE);
-		$(".truePRICE").html($(".totalPRICE").html() - 2500);
+		$(".truePRICE").html($(".totalPRICE").html());
 		
 		// ----------------------------------------------------------
 		
-		$(".finalObjectPRICE").html($(".totalPRICE").html() - 2500);
+		$(".finalObjectPRICE").html($(".totalPRICE").html());
 		
 		if(($(".totalCNT").html() == null) || ($(".totalCNT").html() == '')) {
 			$(".right-outer").css("display", "none");
@@ -477,8 +475,8 @@
 		}
 		
 		$(".totalPRICE").html(totalPRICE);
-		$(".truePRICE").html($(".totalPRICE").html() - 2500);
-		$(".finalObjectPRICE").html($(".totalPRICE").html() - 2500);
+		$(".truePRICE").html($(".totalPRICE").html());
+		$(".finalObjectPRICE").html($(".totalPRICE").html());
 	})
 	// 플러스 버튼 클릭
 	$(".productINFO-TAB").on("click", ".btn-info", function(event) {
@@ -519,8 +517,8 @@
 		}
 		
 		$(".totalPRICE").html(totalPRICE);
-		$(".truePRICE").html($(".totalPRICE").html() - 2500);
-		$(".finalObjectPRICE").html($(".totalPRICE").html() - 2500);
+		$(".truePRICE").html($(".totalPRICE").html());
+		$(".finalObjectPRICE").html($(".totalPRICE").html());
 	})
 	
 	//-------------------------------------------------------------------
@@ -564,8 +562,8 @@
 		}
 		
 		$(".totalPRICE").html(totalPRICE);
-		$(".finalObjectPRICE").html($(".totalPRICE").html() - 2500);
-		$(".truePRICE").html($(".totalPRICE").html() - 2500);
+		$(".finalObjectPRICE").html($(".totalPRICE").html());
+		$(".truePRICE").html($(".totalPRICE").html());
 	})
 	// 플러스 버튼 클릭시 화면 동기화 (작게볼때 화면하고 크게볼때 화면이 서로 다름)
 	$(".c-inner-right-btns").on("click", ".btn-info", function() {
@@ -605,8 +603,8 @@
 		}
 		
 		$(".totalPRICE").html(totalPRICE);
-		$(".finalObjectPRICE").html($(".totalPRICE").html() - 2500);
-		$(".truePRICE").html($(".totalPRICE").html() - 2500);
+		$(".finalObjectPRICE").html($(".totalPRICE").html());
+		$(".truePRICE").html($(".totalPRICE").html());
 	})
 	
 	// 결제버튼 클릭

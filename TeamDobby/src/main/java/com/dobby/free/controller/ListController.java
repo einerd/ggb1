@@ -360,7 +360,7 @@ public class ListController {
 		int total2 = QnaBoardService.getTotal(startDate, endDate, pno);
 		PageVO pageVO1 = new PageVO(cri, total1);
 		PageVO pageVO2 = new PageVO(cri, total2);
-		ArrayList<ReviewVO> list = reviewService.getList(cri, pno, startDate, endDate);
+		ArrayList<ReviewVO> list = reviewService.getList(cri, pno, null, null);
 		ArrayList<QnaVO> list2 = QnaBoardService.getList(cri, pno, startDate, endDate);
 		
 		if(path.equals("review")) {
@@ -370,7 +370,7 @@ public class ListController {
 		}else if(path.equals("qna")) {
 			pageVO1.setPageNum(1);
 			pageVO2 = new PageVO(cri, total2);
-			list = reviewService.getList(new Criteria(), pno, startDate, endDate);
+			list = reviewService.getList(new Criteria(), pno, null, null);
 		}
 		
 		ProductDetailVO vo = listService.searchProductInfo(pno);

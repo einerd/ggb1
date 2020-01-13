@@ -56,6 +56,10 @@
     		padding-top: 80px;
     	}
     	
+    	.titlefoot{
+            float:right;
+        }
+    	
     	#form1 {
     		padding-bottom: 18px;
     	}
