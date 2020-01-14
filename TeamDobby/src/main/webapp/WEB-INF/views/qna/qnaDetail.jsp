@@ -154,7 +154,7 @@
 	                              <c:if test='${qnaVO.q_fileloca != null}'>display:visible;</c:if>
                                ">
                                 <!--<img width="500" src="../resources/img/d1.jpg"> -->
-                                <img width="500" src="${pageContext.request.contextPath }/resources/img/qna/${qnaVO.q_fileloca }/${qnaVO.q_img_name}">
+                                <img width="500" src="view?fileLoca=${qnaVO.q_fileloca }&fileName=${qnaVO.q_img_name}" alt="파일 불러오기 실패">
                       
                                 </div>
                                 </div>
@@ -245,7 +245,7 @@
 	    qnaDelete.onclick = function() {
 	    	location.href = "qnaDelete?qna_no="+${qnaVO.qna_no};
 	    }
-	    
+	    console.log(${pageContext.request.contextPath });
 	    
 	    //$(document).ready(function() {
         //    $('select[id="category"]').find('option:contains("${qnaVO.b_history}")').attr("selected",true);

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +43,12 @@ public class QnaController {
 	// 등록화면
 	@RequestMapping(value = "/qnaRegist", method = RequestMethod.GET)
 	public String qnaRegist(@RequestParam("pno") int pno,
-							Model model) {
+							Model model, HttpSession session,
+							RedirectAttributes RA) {
+		if(session.getAttribute("user_id") == null) {
+			RA.addFlashAttribute("msg", "로그인이 필요한 서비스 입니다");
+			return "redirect:/";
+		}
 		ProductDetailVO vo = listService.searchProductInfo(pno);
 		model.addAttribute("vo", vo);
 		return "qna/qnaRegist";
@@ -60,13 +66,14 @@ public class QnaController {
 							 HttpSession session, RedirectAttributes RA) {
 		System.out.println("여기여기여기 왔어!");
 		
+		
 		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
 			try {
 				System.out.println("파일 있는쪽으로 들어왔어 어쩔거야?");
 				Date date = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				String q_fileloca = sdf.format(date);
-				String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
+				String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\qna\\"+ q_fileloca;
 				
 				File folder = new File(q_uploadpath);
 				if( !folder.exists()) {
@@ -229,7 +236,7 @@ public class QnaController {
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			String q_fileloca = sdf.format(date);
-			String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\qna\\"+ q_fileloca;
+			String q_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\qna\\"+ q_fileloca;
 			
 			File folder = new File(q_uploadpath);
 			if( !folder.exists()) {
@@ -351,5 +358,21 @@ public class QnaController {
 	public QnaVO getPno(@PathVariable("qno") int qno) {
 		return QnaBoardService.getPno(qno);
 	}
+	
+	@RequestMapping(value="view")
+	@ResponseBody
+	public byte[] view(@RequestParam("fileLoca") String fileLoca,
+					   @RequestParam("fileName") String fileName) {
+		File file = new File("F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\qna\\"+fileLoca+"\\"+fileName);
+		
+		byte[] result = null;
+		try {
+			result = FileCopyUtils.copyToByteArray(file);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	
 }

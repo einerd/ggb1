@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -129,7 +129,7 @@ public class ReviewController {
 				Date date = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				String r_fileloca = sdf.format(date);
-				String r_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\"+ r_fileloca;
+				String r_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\review\\"+ r_fileloca;
 				
 				File folder = new File(r_uploadpath);
 				if( !folder.exists()) {
@@ -241,7 +241,7 @@ public class ReviewController {
 				Date date = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				String r_fileloca = sdf.format(date);
-				String r_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\src\\main\\webapp\\resources\\img\\"+ r_fileloca;
+				String r_uploadpath = "F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\review\\"+ r_fileloca;
 				
 				File folder = new File(r_uploadpath);
 				if( !folder.exists()) {
@@ -302,7 +302,20 @@ public class ReviewController {
 	}
 	
 	
-				
+	@RequestMapping(value="view")
+	@ResponseBody
+	public byte[] view(@RequestParam("fileLoca") String fileLoca,
+					   @RequestParam("fileName") String fileName) {
+		File file = new File("F:\\KJH_GITHUB\\tmp\\TeamDobby\\upload\\review\\"+fileLoca+"\\"+fileName);
+		
+		byte[] result = null;
+		try {
+			result = FileCopyUtils.copyToByteArray(file);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}			
 	
 	
 	

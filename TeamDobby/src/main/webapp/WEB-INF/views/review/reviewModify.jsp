@@ -82,7 +82,7 @@
                                <div class="middle">
                                 <c:choose>
 	                               <c:when test="${reviewVO.r_img_name != null }"> <!-- 이미지값 null이면 안보이게 하기 -->
-	                                	<img width="400" src="${pageContext.request.contextPath }/resources/img/${reviewVO.r_fileloca}/${reviewVO.r_img_name}" >
+	                                	<img width="400" src="view?fileLoca=${reviewVO.r_fileloca }&fileName=${reviewVO.r_img_name}" alt="파일 불러오기 실패" >
 	                                </c:when>
 	                                <c:otherwise>
 	                               
